@@ -2707,6 +2707,115 @@
                 `
             },
             {
+                title: 'Punch Shot',
+                type: 'guide',
+                content: `
+                    <div class="page-content">
+                        <h3>🎯 Punch Shot</h3>
+                        <p style="font-size: 12px; margin: 12px 0; color: #555; line-height: 1.6;">A controlled shot with reduced flight that penetrates through wind and stays under obstacles.</p>
+                        <div style="background: #fff3cd; padding: 12px; border-radius: 4px; margin: 12px 0; font-size: 11px; color: #333;">
+                            <strong>When to use:</strong> Strong wind, low ceiling from trees, need accuracy over distance
+                        </div>
+                        <div style="margin: 12px 0; font-size: 11px;">
+                            <strong style="color: #27ae60;">Setup:</strong>
+                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
+                                • Move ball back in stance (1-2 balls)<br>
+                                • Hands ahead of the ball<br>
+                                • Feet closer together<br>
+                                • Shorter backswing
+                            </div>
+                        </div>
+                        <div style="margin: 12px 0; font-size: 11px;">
+                            <strong style="color: #27ae60;">Swing Thought:</strong>
+                            <div style="color: #555; margin-top: 6px;">
+                                "Smooth tempo, keep it low, punch through the wind."
+                            </div>
+                        </div>
+                        <div style="margin: 12px 0; font-size: 11px;">
+                            <strong style="color: #27ae60;">Key Points:</strong>
+                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
+                                • Less distance than full swing (about 70-80%)<br>
+                                • Flight stays 10-15 feet lower<br>
+                                • More predictable in wind
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: 'Chip Shot',
+                type: 'guide',
+                content: `
+                    <div class="page-content">
+                        <h3>🎯 Chip Shot</h3>
+                        <p style="font-size: 12px; margin: 12px 0; color: #555; line-height: 1.6;">A short, controlled shot close to the green where you want the ball to land softly and roll to the hole.</p>
+                        <div style="background: #fff3cd; padding: 12px; border-radius: 4px; margin: 12px 0; font-size: 11px; color: #333;">
+                            <strong>When to use:</strong> Within 30 yards of green, clean lie, want soft landing
+                        </div>
+                        <div style="margin: 12px 0; font-size: 11px;">
+                            <strong style="color: #27ae60;">Club Selection:</strong>
+                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
+                                • Short distance (20 yds): 9-iron or PW<br>
+                                • Medium distance (30 yds): 7-8 iron<br>
+                                • Roll needed: 6-7 iron
+                            </div>
+                        </div>
+                        <div style="margin: 12px 0; font-size: 11px;">
+                            <strong style="color: #27ae60;">Setup:</strong>
+                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
+                                • Narrow stance, feet 6 inches apart<br>
+                                • Ball in center or slightly back<br>
+                                • Hands ahead<br>
+                                • Weight favors front foot
+                            </div>
+                        </div>
+                        <div style="margin: 12px 0; font-size: 11px;">
+                            <strong style="color: #27ae60;">Swing Thought:</strong>
+                            <div style="color: #555; margin-top: 6px;">
+                                "Small pendulum stroke, let the club do the work."
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: 'Recovery Shot',
+                type: 'guide',
+                content: `
+                    <div class="page-content">
+                        <h3>🎯 Recovery Shot</h3>
+                        <p style="font-size: 12px; margin: 12px 0; color: #555; line-height: 1.6;">A creative shot to get out of difficult situations like rough, trees, or uneven lies while advancing toward the target.</p>
+                        <div style="background: #fff3cd; padding: 12px; border-radius: 4px; margin: 12px 0; font-size: 11px; color: #333;">
+                            <strong>When to use:</strong> Thick rough, uneven lie, need to escape trouble
+                        </div>
+                        <div style="margin: 12px 0; font-size: 11px;">
+                            <strong style="color: #27ae60;">From Thick Rough:</strong>
+                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
+                                • Use shorter club (increases contact)<br>
+                                • Ball position back in stance<br>
+                                • Expect 10-15% less distance<br>
+                                • Swing down firmly, follow through
+                            </div>
+                        </div>
+                        <div style="margin: 12px 0; font-size: 11px;">
+                            <strong style="color: #27ae60;">From Uneven Lie:</strong>
+                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
+                                • Align shoulders to the slope<br>
+                                • Play ball lower in stance<br>
+                                • Shorter swing arc<br>
+                                • Commit to the shot
+                            </div>
+                        </div>
+                        <div style="margin: 12px 0; font-size: 11px;">
+                            <strong style="color: #27ae60;">Key Thought:</strong>
+                            <div style="color: #555; margin-top: 6px;">
+                                "Accept the situation, focus on contact, advance the ball."
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
                 title: 'Shot Analyzer',
                 type: 'tool',
                 content: `
@@ -3098,9 +3207,17 @@ function updatePages() {
             // Add shot type guidance links
             const shotType = getSAShotType(location, distance, wind, lie);
             let links = '';
-            if (shotType === 'punch') links = '📖 <a href="#" onclick="goToPage(PAGES_DATA.findIndex(p => p.title === \\'Punch Shot\\'))">Punch Shot Guide</a>';
-            else if (shotType === 'chip') links = '📖 <a href="#" onclick="goToPage(PAGES_DATA.findIndex(p => p.title === \\'Chip Shot\\'))">Chip Shot Guide</a>';
-            else if (shotType === 'recovery') links = '📖 <a href="#" onclick="goToPage(PAGES_DATA.findIndex(p => p.title === \\'Recovery Shot\\'))">Recovery Shot Guide</a>';
+            const punchIdx = PAGES_DATA.findIndex(p => p.title === 'Punch Shot');
+            const chipIdx = PAGES_DATA.findIndex(p => p.title === 'Chip Shot');
+            const recoveryIdx = PAGES_DATA.findIndex(p => p.title === 'Recovery Shot');
+
+            if (shotType === 'punch' && punchIdx !== -1) {
+                links = `📖 <a href="#" onclick="goToPage(${punchIdx}); return false;">Punch Shot Guide</a>`;
+            } else if (shotType === 'chip' && chipIdx !== -1) {
+                links = `📖 <a href="#" onclick="goToPage(${chipIdx}); return false;">Chip Shot Guide</a>`;
+            } else if (shotType === 'recovery' && recoveryIdx !== -1) {
+                links = `📖 <a href="#" onclick="goToPage(${recoveryIdx}); return false;">Recovery Shot Guide</a>`;
+            }
 
             if (links) document.getElementById('sa-links').innerHTML = links;
             else document.getElementById('sa-links').innerHTML = '';
