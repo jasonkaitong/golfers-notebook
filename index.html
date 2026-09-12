@@ -3171,8 +3171,9 @@ function updatePages() {
             let club = getSAClubForDistance(distance, location);
             let adjustedDistance = distance;
 
-            if (elev > 0) adjustedDistance += Math.abs(elev) * 2;
-            else if (elev < 0) adjustedDistance -= Math.abs(elev) * 1.5;
+            // Positive elevation = uphill (reduces carry), negative = downhill (increases carry)
+            if (elev > 0) adjustedDistance -= Math.abs(elev) * 2;
+            else if (elev < 0) adjustedDistance += Math.abs(elev) * 1.5;
 
             if (wind === 'strong') {
                 if (winddir === 'headwind') adjustedDistance += 20;
