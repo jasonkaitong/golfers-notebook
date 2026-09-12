@@ -1,0 +1,2350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golfer's Notebook</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #2c3e50;
+            color: #2c3e50;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #27ae60;
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .category-bar {
+            background: #27ae60;
+            border-top: 1px solid #229954;
+            border-bottom: 1px solid #229954;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 8px 0;
+            display: flex;
+            gap: 8px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        .category-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 12px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .category-btn.active {
+            background: rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .category-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .content-area {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            padding: 20px;
+            overflow-y: auto;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.1);
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .page.prev {
+            z-index: 0;
+        }
+
+        .page-content {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: relative;
+            min-height: calc(100% - 40px);
+            background-image:
+                repeating-linear-gradient(
+                    to bottom,
+                    transparent,
+                    transparent 29px,
+                    #e8e8e8 29px,
+                    #e8e8e8 30px
+                );
+            background-position: 0 40px;
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+        }
+
+        .page-content::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            background: repeating-linear-gradient(
+                to bottom,
+                #27ae60 0px,
+                #27ae60 2px,
+                transparent 2px,
+                transparent 8px
+            );
+            border-radius: 8px 0 0 8px;
+        }
+
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            font-family: 'Georgia', serif;
+        }
+
+        .cover-page .page-content {
+            background-image: url('golf-cover.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            border: 3px solid #1e8449;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .cover-page .page-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            z-index: 0;
+        }
+
+        .cover-page .page-content > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-page h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .cover-page .subtitle {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .cover-page .quick-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .cover-page .quick-link-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .cover-page .quick-link-btn:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .cover-page .author-info {
+            margin-top: 40px;
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        .section-title {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #27ae60;
+        }
+
+        .section-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .section-link {
+            background: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            padding: 12px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-size: 14px;
+            color: #27ae60;
+        }
+
+        .section-link:hover {
+            background: #27ae60;
+            color: white;
+        }
+
+        .page-content h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #27ae60;
+            border-bottom: 2px solid #27ae60;
+            padding-bottom: 12px;
+        }
+
+        .page-content h4 {
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .page-content p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .page-content ul {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .page-content li {
+            margin-bottom: 6px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #27ae60;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .close-btn:hover {
+            color: #2c3e50;
+        }
+
+        .club-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .club-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ecf0f1;
+            border-radius: 4px;
+            background: #f8f9fa;
+        }
+
+        .club-item input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .club-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .club-yardage {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-left: 10px;
+        }
+
+        .yardage-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .yardage-table th {
+            background: #27ae60;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        .yardage-table td {
+            padding: 8px;
+            border: 1px solid #ecf0f1;
+            font-size: 13px;
+        }
+
+        .yardage-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .yardage-input {
+            width: 60px;
+            padding: 4px;
+            border: 1px solid #bdc3c7;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #229954;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .swipe-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            pointer-events: none;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .page-content {
+                padding: 30px 20px;
+                font-size: 14px;
+            }
+
+            .page-content h3 {
+                font-size: 20px;
+            }
+
+            .cover-page h1 {
+                font-size: 36px;
+            }
+
+            .header {
+                padding: 10px 12px;
+            }
+
+            .header-title {
+                font-size: 14px;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20% auto;
+                padding: 20px;
+            }
+        }
+
+        .notation {
+            background: #ecf0f1;
+            padding: 8px 12px;
+            border-left: 3px solid #27ae60;
+            margin: 12px 0;
+            font-size: 13px;
+            border-radius: 3px;
+        }
+
+        .footer {
+            background: #27ae60;
+            border-top: 1px solid #229954;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+        }
+
+        .page-counter {
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .nav-btn:disabled {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-title" id="pageTitle">Golfer's Notebook</div>
+            <div class="header-buttons">
+                <button class="header-btn" id="clubSetupBtn">⚙️ Setup</button>
+                <button class="header-btn" id="yardageBtn">📏 Yardage</button>
+            </div>
+        </div>
+
+        <div class="category-bar" id="categoryBar">
+            <button class="category-btn" data-section="0">Home</button>
+            <button class="category-btn" data-section="2">Off Tee</button>
+            <button class="category-btn" data-section="10">Fairway</button>
+            <button class="category-btn" data-section="25">Around Green</button>
+            <button class="category-btn" data-section="44">Appendix</button>
+        </div>
+
+        <div class="content-area" id="contentArea">
+            <!-- Pages will be inserted here -->
+        </div>
+
+        <div class="footer">
+            <div class="page-counter" id="pageCounter">1 / 43</div>
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn" onclick="goToPage(currentPage - 1)">← Back</button>
+                <button class="nav-btn" id="nextBtn" onclick="goToPage(currentPage + 1)">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Club Setup Modal -->
+    <div class="modal" id="clubSetupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Club Setup</span>
+                <button class="close-btn" onclick="closeModal('clubSetupModal')">&times;</button>
+            </div>
+            <div id="clubList" class="club-list"></div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeModal('clubSetupModal')">Close</button>
+                <button class="btn btn-primary" onclick="saveClubSetup()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yardage Modal -->
+    <div class="modal" id="yardageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Yardage Chart</span>
+                <button class="close-btn" onclick="closeModal('yardageModal')">&times;</button>
+            </div>
+            <div id="yardageContent"></div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeModal('yardageModal')">Close</button>
+                <button class="btn btn-primary" onclick="saveYardages()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CLUBS = [
+            { name: 'Driver', carry: 230, total: 250 },
+            { name: '3-Wood', carry: 210, total: 225 },
+            { name: '3-Hybrid', carry: 200, total: 210 },
+            { name: '3-Iron', carry: 195, total: 200 },
+            { name: '4-Iron', carry: 185, total: 190 },
+            { name: '5-Iron', carry: 175, total: 180 },
+            { name: '6-Iron', carry: 165, total: 170 },
+            { name: '7-Iron', carry: 155, total: 160 },
+            { name: '8-Iron', carry: 145, total: 150 },
+            { name: '9-Iron', carry: 135, total: 140 },
+            { name: 'PW', carry: 116, total: 120 },
+            { name: 'GW (52°)', carry: 110, total: 115 },
+            { name: 'SW (56°)', carry: 100, total: 105 },
+            { name: 'Putter', carry: 0, total: 0 }
+        ];
+
+        const PAGES_DATA = [
+            {
+                title: 'Cover',
+                type: 'cover',
+                content: `
+                    <div class="cover-page">
+                        <div class="page-content cover-page">
+                            <h1>Golfer's Notebook</h1>
+                            <div class="subtitle">Shot Selection & Swing Tips</div>
+                            <div class="quick-links">
+                                <button class="quick-link-btn" onclick="goToPage(2)">Off Tee</button>
+                                <button class="quick-link-btn" onclick="goToPage(10)">Fairway</button>
+                                <button class="quick-link-btn" onclick="goToPage(25)">Around Green</button>
+                            </div>
+                            <div class="author-info">
+                                Personalized for JT<br>
+                                Version 1.0
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: 'Off The Tee',
+                type: 'section',
+                content: `
+                    <div class="section-title">
+                        <h2>Off The Tee</h2>
+                        <p>Distance & Shape Control</p>
+                        <div class="section-links">
+                            <div class="section-link" onclick="goToPage(3)">High Fade</div>
+                            <div class="section-link" onclick="goToPage(4)">High Draw</div>
+                            <div class="section-link" onclick="goToPage(5)">Straight Shot</div>
+                            <div class="section-link" onclick="goToPage(6)">High Straight</div>
+                            <div class="section-link" onclick="goToPage(7)">Low Draw</div>
+                            <div class="section-link" onclick="goToPage(8)">Low Cut</div>
+                            <div class="section-link" onclick="goToPage(9)">Low Stinger</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: 'High Fade',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>High Fade</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Driver (230y carry), 3-Wood (210y carry)</p>
+                        <h4>Strategy</h4>
+                        <p>Use fade when needing accuracy on narrow fairways or when right side is open. Reduces distance slightly vs. straight ball.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Fairway slopes left-to-right and you want safe miss</li>
+                            <li>Dogleg right holes</li>
+                            <li>Out of bounds left</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Closed (feet aimed right of target), shoulders closed</li>
+                            <li><strong>Ball position:</strong> Center to slightly forward</li>
+                            <li><strong>Weight:</strong> 50/50 at address</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, smooth, club face closed relative to swing path</li>
+                            <li><strong>Downswing:</strong> Path comes from inside-out slightly; clubface open to path</li>
+                            <li><strong>Impact:</strong> Strike center face, hands ahead slightly</li>
+                            <li><strong>Follow-through:</strong> High finish, balanced</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Over-rotating hips in backswing (causes lack of coil)</li>
+                            <li>Club face too open at setup (promotes slice, not controlled fade)</li>
+                            <li>Swaying laterally instead of rotating</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'High Draw',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>High Draw</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Driver (230y carry), 3-Wood (210y carry)</p>
+                        <h4>Strategy</h4>
+                        <p>Use draw for distance on open fairways or when left side is protected. Typically longer than straight shot due to shape.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Dogleg left holes</li>
+                            <li>Out of bounds right</li>
+                            <li>Fairway slopes right-to-left</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Open (feet aimed left of target), shoulders open</li>
+                            <li><strong>Ball position:</strong> Center to slightly back</li>
+                            <li><strong>Weight:</strong> 50/50 at address</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, smooth, club face open relative to swing path</li>
+                            <li><strong>Downswing:</strong> Path comes from outside-in; clubface closed to path at impact</li>
+                            <li><strong>Impact:</strong> Strike center face, weight moving to front side</li>
+                            <li><strong>Follow-through:</strong> High finish, complete rotation</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Swinging too far left (overcooking the shape)</li>
+                            <li>Starting open but then rolling hands excessively (hooks instead of draw)</li>
+                            <li>Tension in forearms limiting release</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Straight Shot',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Straight Shot</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Driver (230y carry)</p>
+                        <h4>Strategy</h4>
+                        <p>Maximum control, neutral shape. Reliable for tight fairways or when shaping risk isn't worth it.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Tight, straight fairways</li>
+                            <li>No clear advantage to fading or drawing</li>
+                            <li>Low confidence in shaping</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Square (feet parallel to target line)</li>
+                            <li><strong>Shoulders:</strong> Square to target line</li>
+                            <li><strong>Ball position:</strong> Center</li>
+                            <li><strong>Weight:</strong> 50/50 at address</li>
+                            <li><strong>Grip:</strong> Neutral (V between thumb/index at 12 o'clock)</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, smooth rotation; club face square to swing path</li>
+                            <li><strong>Downswing:</strong> Path comes straight through; club face square to path</li>
+                            <li><strong>Impact:</strong> Strike center face, weight balanced</li>
+                            <li><strong>Follow-through:</strong> High finish, center line balance</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Gripping too tightly (inhibits release)</li>
+                            <li>Overthinking during swing (tension creeps in)</li>
+                            <li>Early extension (moving hips too far forward)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'High Straight',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>High Straight</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Driver (230y carry)</p>
+                        <h4>Strategy</h4>
+                        <p>Maximum loft, distance-reducing trajectory. Better control, softer landing.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Firm/hard fairways (less rollout needed)</li>
+                            <li>Elevated green behind landing zone</li>
+                            <li>Into headwind</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Square</li>
+                            <li><strong>Shoulders:</strong> Square</li>
+                            <li><strong>Ball position:</strong> Forward (inside left heel)</li>
+                            <li><strong>Weight:</strong> 60% back foot at address</li>
+                            <li><strong>Tee:</strong> Higher than usual (1.5-2 inches)</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, smooth, feel weight on back leg</li>
+                            <li><strong>Downswing:</strong> Lag pressure maintained, shallow angle of attack</li>
+                            <li><strong>Impact:</strong> Ascending blow (club traveling upward)</li>
+                            <li><strong>Follow-through:</strong> High, complete finish</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Hitting down on ball (contradicts high trajectory goal)</li>
+                            <li>Over-teeing (club trajectory too high, loss of accuracy)</li>
+                            <li>Swinging faster (promotes low trajectory and mishits)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Low Draw',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Low Draw</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Driver (230y carry), 3-Wood (210y carry)</p>
+                        <h4>Strategy</h4>
+                        <p>Run-focused, distance maximizer. Draw shape reduces sidespin, increases roll.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Hard, fast fairways (will roll significantly)</li>
+                            <li>Downwind</li>
+                            <li>When maximum total distance needed</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Open (closed relative to target)</li>
+                            <li><strong>Ball position:</strong> Center to back</li>
+                            <li><strong>Weight:</strong> 60% front foot at address</li>
+                            <li><strong>Tee:</strong> Lower than usual (0.5-1 inch)</li>
+                            <li><strong>Lean:</strong> Hands ahead of ball</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Slightly shorter, more compact; maintain back weight</li>
+                            <li><strong>Downswing:</strong> Controlled tempo, hands still ahead into impact</li>
+                            <li><strong>Impact:</strong> Descending blow slightly, forward shaft lean</li>
+                            <li><strong>Follow-through:</strong> More compact than high shots</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Hitting too hard (promotes slice/weak fade)</li>
+                            <li>Over-lofting the shot (negates low trajectory)</li>
+                            <li>Ball too far back in stance (causes mis-hits)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Low Cut',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Low Cut</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Driver (230y carry), 3-Wood (210y carry)</p>
+                        <h4>Strategy</h4>
+                        <p>Hard-running shape, useful for narrow fairways. Firm landing, reduced roll vs. draw.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Hard fairways with tight miss left</li>
+                            <li>Downwind, want to avoid roll</li>
+                            <li>Maximum control over shape and distance</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Closed (open relative to target)</li>
+                            <li><strong>Ball position:</strong> Center</li>
+                            <li><strong>Weight:</strong> 60% front foot</li>
+                            <li><strong>Tee:</strong> Low (0.5-1 inch)</li>
+                            <li><strong>Grip:</strong> Firm but not tense</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Compact, controlled, inside takeaway</li>
+                            <li><strong>Downswing:</strong> Slightly out-to-in path, club face open to path</li>
+                            <li><strong>Impact:</strong> Descending, controlled spin</li>
+                            <li><strong>Follow-through:</strong> Compact finish, controlled</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Swinging too hard (promotes slice, not controlled cut)</li>
+                            <li>Stance too open (causes pull-cut)</li>
+                            <li>Overthinking the shape</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Low Stinger',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Low Stinger</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>3-Iron (195y carry) - Perfect for this shot type</p>
+                        <h4>Strategy</h4>
+                        <p>Penetrating trajectory, firm landing. Used for wind management or tight accuracy shots. JT's 3-iron is perfect for this shot.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Strong headwind</li>
+                            <li>Very tight landing zone</li>
+                            <li>Need precision over distance</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Narrow, square</li>
+                            <li><strong>Ball position:</strong> Back of center</li>
+                            <li><strong>Weight:</strong> 65% front foot (well forward)</li>
+                            <li><strong>Hands:</strong> Well ahead of ball</li>
+                            <li><strong>Tee:</strong> Very low (nub height)</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Shorter, compact, crisp tempo</li>
+                            <li><strong>Downswing:</strong> Push legs forward, maintain hands ahead</li>
+                            <li><strong>Impact:</strong> Very forward strike, driving action</li>
+                            <li><strong>Follow-through:</strong> Short, controlled finish</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Ball too far forward (causes thin, weak shots)</li>
+                            <li>Hands not ahead (fat contact)</li>
+                            <li>Swinging too hard (loses control)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'From The Fairway',
+                type: 'section',
+                content: `
+                    <div class="section-title">
+                        <h2>From The Fairway</h2>
+                        <p>Lies, Shaping & Special Shots</p>
+                        <div class="section-links">
+                            <div class="section-link" onclick="goToPage(11)">Uphill Lie</div>
+                            <div class="section-link" onclick="goToPage(12)">Downhill Lie</div>
+                            <div class="section-link" onclick="goToPage(13)">Sidehill (RtL)</div>
+                            <div class="section-link" onclick="goToPage(14)">Sidehill (LtR)</div>
+                            <div class="section-link" onclick="goToPage(15)">Fade</div>
+                            <div class="section-link" onclick="goToPage(16)">Draw</div>
+                            <div class="section-link" onclick="goToPage(17)">Bunker (No Lip)</div>
+                            <div class="section-link" onclick="goToPage(18)">Bunker (High Lip)</div>
+                            <div class="section-link" onclick="goToPage(20)">Over Tree</div>
+                            <div class="section-link" onclick="goToPage(21)">Around Tree</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: 'Uphill Lie',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Uphill Lie</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Use one club longer than normal distance. Example: 150 yards → Use 6-Iron (165y) instead of 7-Iron (155y)</p>
+                        <h4>Strategy</h4>
+                        <p>Uphill lie naturally adds loft and reduces distance. Compensate by using longer club.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Perpendicular to slope (shoulders align with hill)</li>
+                            <li><strong>Ball position:</strong> Slightly forward of center</li>
+                            <li><strong>Weight:</strong> 60% on uphill (lower) side</li>
+                            <li><strong>Shoulders:</strong> Align with slope</li>
+                            <li><strong>Stance:</strong> Wider than normal for stability</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Smooth, full rotation maintaining slope alignment</li>
+                            <li><strong>Downswing:</strong> Controlled, avoid sliding downhill</li>
+                            <li><strong>Impact:</strong> Strike from in-to-out path naturally due to slope</li>
+                            <li><strong>Follow-through:</strong> Balanced, uphill side stays down</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Hitting same club as flat lie (ball short and right)</li>
+                            <li>Sliding downhill (poor contact, push shots)</li>
+                            <li>Leaning into slope (loss of balance)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Downhill Lie',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Downhill Lie</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Use one club weaker (shorter) than normal distance. Example: 150 yards → Use 8-Iron (145y) instead of 7-Iron (155y)</p>
+                        <h4>Strategy</h4>
+                        <p>Downhill lie delofts the club, adds distance (deceptive). Use shorter club to control trajectory and spin.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Perpendicular to slope</li>
+                            <li><strong>Ball position:</strong> Slightly back of center</li>
+                            <li><strong>Weight:</strong> 60% on downhill (upper) side</li>
+                            <li><strong>Shoulders:</strong> Align with slope</li>
+                            <li><strong>Stance:</strong> Wider than normal for stability</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Smooth, rotate but control lower body</li>
+                            <li><strong>Downswing:</strong> Feel weight moving with slope naturally</li>
+                            <li><strong>Impact:</strong> Strike with descending blow (slope helps)</li>
+                            <li><strong>Follow-through:</strong> Follow slope down, don't fight it</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Using same club as flat lie (ball runs long, off-line)</li>
+                            <li>Falling backward (poor balance)</li>
+                            <li>Decelerating into impact</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Sidehill (RtL)',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Sidehill Lie (Ball Above Feet)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Adjust selection based on pull tendency</p>
+                        <h4>Strategy</h4>
+                        <p>Ball above feet promotes draw/pull. Choke down on grip to lower trajectory.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Square to target, not to slope</li>
+                            <li><strong>Ball position:</strong> Slightly back of center</li>
+                            <li><strong>Weight:</strong> 50/50, but feel weight back</li>
+                            <li><strong>Grip:</strong> Choke down 1-2 inches</li>
+                            <li><strong>Posture:</strong> Bend more at hips (shorter reach)</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Compact, controlled, feel rotation</li>
+                            <li><strong>Downswing:</strong> Don't over-accelerate (draw already present)</li>
+                            <li><strong>Impact:</strong> Expect pull/draw, aim right of target</li>
+                            <li><strong>Follow-through:</strong> Smooth, controlled</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Aiming at target (ball pulls left)</li>
+                            <li>Full-length grip (ball too far left)</li>
+                            <li>Swinging hard (exaggerates draw)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Sidehill (LtR)',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Sidehill Lie (Ball Below Feet)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Adjust selection; use caution with shorter clubs</p>
+                        <h4>Strategy</h4>
+                        <p>Ball below feet promotes fade/slice. Stand taller, more upright posture.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Square to target, not to slope</li>
+                            <li><strong>Ball position:</strong> Slightly forward of center</li>
+                            <li><strong>Weight:</strong> 50/50, but feel into balls of feet</li>
+                            <li><strong>Grip:</strong> Full length</li>
+                            <li><strong>Posture:</strong> More upright, less bend at hips</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Controlled, feel stability in legs</li>
+                            <li><strong>Downswing:</strong> Smooth tempo, resist over-swinging</li>
+                            <li><strong>Impact:</strong> Expect fade, aim left of target</li>
+                            <li><strong>Follow-through:</strong> Smooth, no abrupt finish</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Aiming at target (ball fades right)</li>
+                            <li>Overcompensating (too upright posture causes inconsistency)</li>
+                            <li>Swinging hard (exaggerates fade)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Fade from Fairway',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Fade from Fairway</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Any club. Example: 165-yard fade → 6-Iron (165y) or 3-Hybrid (200y)</p>
+                        <h4>Strategy</h4>
+                        <p>Intentional fade shape, useful on RtL doglegs.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>RtL doglegs</li>
+                            <li>Fairway slopes LtR and you want to stop ball</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Slightly closed relative to target</li>
+                            <li><strong>Ball position:</strong> Center to forward</li>
+                            <li><strong>Weight:</strong> 50/50</li>
+                            <li><strong>Grip:</strong> Neutral to strong</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, smooth, club face slightly closed</li>
+                            <li><strong>Downswing:</strong> Out-to-in path subtly, club face open to path</li>
+                            <li><strong>Impact:</strong> Clean strike, control spin</li>
+                            <li><strong>Follow-through:</strong> High, balanced</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Opening stance too much (pull-fades)</li>
+                            <li>Club face too open (slice, not fade)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Draw from Fairway',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Draw from Fairway</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Any club. Example: 165-yard draw → 6-Iron (165y) or 3-Hybrid (200y)</p>
+                        <h4>Strategy</h4>
+                        <p>Intentional draw shape, distance advantage.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>LtR doglegs</li>
+                            <li>Need maximum roll/distance</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Slightly open relative to target</li>
+                            <li><strong>Ball position:</strong> Slightly back of center</li>
+                            <li><strong>Weight:</strong> 50/50</li>
+                            <li><strong>Grip:</strong> Neutral to weak</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, smooth, club face open</li>
+                            <li><strong>Downswing:</strong> In-to-out path subtly, club face closed to path</li>
+                            <li><strong>Impact:</strong> Clean strike, draw spin</li>
+                            <li><strong>Follow-through:</strong> High, complete</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Closing stance too much (hook, not draw)</li>
+                            <li>Club face too closed at address (guarantees hook)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Fairway Bunker (No Lip)',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Fairway Bunker (No Lip)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>1-2 clubs stronger. Example: 150y bunker → Use 5-Iron or 3-Hybrid (one club longer)</p>
+                        <h4>Strategy</h4>
+                        <p>No lip obstruction means focus is clean contact, not escape. Ball will sit higher in sand, easier to catch cleanly.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Slightly wider, firm stance</li>
+                            <li><strong>Ball position:</strong> Center</li>
+                            <li><strong>Weight:</strong> 55% on front foot (slight forward lean)</li>
+                            <li><strong>Grip:</strong> Firm</li>
+                            <li><strong>Posture:</strong> Taller posture, reduced knee flex</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Smooth, controlled, compact</li>
+                            <li><strong>Downswing:</strong> Sweep motion, hit ball first (not sand first)</li>
+                            <li><strong>Impact:</strong> Clean contact on ball, minimal sand before</li>
+                            <li><strong>Follow-through:</strong> Smooth, controlled finish</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Taking sand before ball (fat shot)</li>
+                            <li>Decelerating into shot (short, weak contact)</li>
+                            <li>Swinging too aggressively (uncontrolled result)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Fairway Bunker (High Lip)',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Fairway Bunker (High Lip)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°) or Gap Wedge (52°) depending on height</p>
+                        <h4>Strategy</h4>
+                        <p>Focus entirely on clearing lip. Distance secondary to escape.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Slightly wider, open 15-20 degrees to target</li>
+                            <li><strong>Ball position:</strong> Forward of center</li>
+                            <li><strong>Weight:</strong> 55% on front foot</li>
+                            <li><strong>Grip:</strong> Firm</li>
+                            <li><strong>Posture:</strong> Slightly taller, less flex</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full backswing, feel the loft</li>
+                            <li><strong>Downswing:</strong> Hit down on ball with acceleration</li>
+                            <li><strong>Impact:</strong> Descending blow, take thin sand wedge</li>
+                            <li><strong>Follow-through:</strong> High finish, complete swing</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Using long club (won't clear lip)</li>
+                            <li>Ball too far back (reduces loft)</li>
+                            <li>Decelerating (short, weak result)</li>
+                            <li>Trying for distance (lose focus on clearing lip)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Around Obstacles',
+                type: 'section',
+                content: `
+                    <div class="section-title">
+                        <h2>Around Obstacles</h2>
+                        <p>Tree Shots & Special Approaches</p>
+                        <div class="section-links">
+                            <div class="section-link" onclick="goToPage(21)">Over Tree</div>
+                            <div class="section-link" onclick="goToPage(22)">Left Around Tree</div>
+                            <div class="section-link" onclick="goToPage(23)">Right Around Tree</div>
+                            <div class="section-link" onclick="goToPage(24)">Low Runner</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: 'Over Tree',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Over Tree</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>3-Hybrid (200y carry) or 5-Wood (210y carry)</p>
+                        <h4>Strategy</h4>
+                        <p>Requires higher trajectory than normal shot. Focus on clearing tree branch height.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Square</li>
+                            <li><strong>Ball position:</strong> Forward of center (adds loft)</li>
+                            <li><strong>Weight:</strong> 60% back foot (helps trajectory)</li>
+                            <li><strong>Tee (if allowed):</strong> Slightly higher</li>
+                            <li><strong>Posture:</strong> Normal</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, smooth, feel weight on back leg</li>
+                            <li><strong>Downswing:</strong> Lag maintained, shallow angle</li>
+                            <li><strong>Impact:</strong> Strike from in-to-out, upward angle</li>
+                            <li><strong>Follow-through:</strong> High finish, complete motion</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Hitting long club too hard (less loft result)</li>
+                            <li>Ball too back in stance (low trajectory)</li>
+                            <li>Swinging down on ball (delofts, reduces height)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Left Around Tree',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Around Tree (Left)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>5-Iron (175y) or 6-Iron (165y) typical</p>
+                        <h4>Strategy</h4>
+                        <p>Fade/slice around left side. Draw shot creates more curvature, may hit tree.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Closed (aimed right of tree)</li>
+                            <li><strong>Ball position:</strong> Center to slightly back</li>
+                            <li><strong>Weight:</strong> 50/50</li>
+                            <li><strong>Grip:</strong> Neutral to strong</li>
+                            <li><strong>Aim:</strong> Right of tree target</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, smooth</li>
+                            <li><strong>Downswing:</strong> Out-to-in path (slight cut), club face open to path</li>
+                            <li><strong>Impact:</strong> Clean strike, fade spin</li>
+                            <li><strong>Follow-through:</strong> High, smooth</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Swinging at tree (causes tension, poor swing)</li>
+                            <li>Aiming at target instead of right (ball hits tree)</li>
+                            <li>Over-cutting (ball goes too far right)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Right Around Tree',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Around Tree (Right)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>5-Iron (175y) or 6-Iron (165y) typical</p>
+                        <h4>Strategy</h4>
+                        <p>Draw/hook around right side. Fade shot may hit tree, less ideal.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Open (aimed left of tree)</li>
+                            <li><strong>Ball position:</strong> Slightly back of center</li>
+                            <li><strong>Weight:</strong> 50/50</li>
+                            <li><strong>Grip:</strong> Neutral to weak</li>
+                            <li><strong>Aim:</strong> Left of tree target</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, smooth</li>
+                            <li><strong>Downswing:</strong> In-to-out path (slight draw), club face closed to path</li>
+                            <li><strong>Impact:</strong> Clean strike, draw spin</li>
+                            <li><strong>Follow-through:</strong> High, smooth</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Swinging at tree (fear causes poor contact)</li>
+                            <li>Aiming at target instead of left (ball hits tree)</li>
+                            <li>Over-drawing (ball goes too far left)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Low Runner',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Low Runner Under Branch</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>3-Iron (195y carry) - Perfect for this shot</p>
+                        <h4>Strategy</h4>
+                        <p>Keep ball low under branch, roll to target. Penetrating trajectory, firm landing.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Narrow, square</li>
+                            <li><strong>Ball position:</strong> Back of center</li>
+                            <li><strong>Weight:</strong> 65% on front foot</li>
+                            <li><strong>Hands:</strong> Well ahead of ball</li>
+                            <li><strong>Posture:</strong> Slightly taller, less knee flex</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Compact, controlled, crisp tempo</li>
+                            <li><strong>Downswing:</strong> Drive forward, hands stay ahead</li>
+                            <li><strong>Impact:</strong> Descending strike, firm contact</li>
+                            <li><strong>Follow-through:</strong> Compact, controlled</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Ball too far forward (flying up, hits branch)</li>
+                            <li>Hands releasing too much (adds loft)</li>
+                            <li>Swinging hard (loses control)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Around The Green',
+                type: 'section',
+                content: `
+                    <div class="section-title">
+                        <h2>Around The Green</h2>
+                        <p>60 Yards & In</p>
+                        <div class="section-links">
+                            <div class="section-link" onclick="goToPage(26)">Tight Lie Chip</div>
+                            <div class="section-link" onclick="goToPage(27)">Fluffy Lie Chip</div>
+                            <div class="section-link" onclick="goToPage(28)">Check & Run</div>
+                            <div class="section-link" onclick="goToPage(29)">Check & Stop</div>
+                            <div class="section-link" onclick="goToPage(30)">Pitch Shot</div>
+                            <div class="section-link" onclick="goToPage(31)">Flop Shot</div>
+                            <div class="section-link" onclick="goToPage(32)">Flop (Fluffy)</div>
+                            <div class="section-link" onclick="goToPage(33)">Punch Pitch</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: 'Tight Lie Chip',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Tight Lie Chip</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>7-Iron, 8-Iron, 9-Iron, PW</p>
+                        <h4>Strategy</h4>
+                        <p>Simple stroke motion, land and roll to pin. Ball sits on short grass (good contact likely).</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Within 10-15 yards of green</li>
+                            <li>Short grass, good surface</li>
+                            <li>Normal slope (not severely uphill/downhill)</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Narrow, open 20-30 degrees</li>
+                            <li><strong>Ball position:</strong> Back of center</li>
+                            <li><strong>Weight:</strong> 65% on front foot</li>
+                            <li><strong>Hands:</strong> Ahead of ball</li>
+                            <li><strong>Grip:</strong> Choked down 3-4 inches</li>
+                            <li><strong>Arms:</strong> Relaxed, hang naturally</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Pendulum motion from shoulders, minimal wrist</li>
+                            <li><strong>Downswing:</strong> Continuous rhythm, hands stay ahead</li>
+                            <li><strong>Impact:</strong> Strike center club face, crisp</li>
+                            <li><strong>Follow-through:</strong> Same length as backswing (mirror image)</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Wristy motion (inconsistent contact)</li>
+                            <li>Decelerating (leaves ball short)</li>
+                            <li>Hitting too hard (overshoots)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Fluffy Lie Chip',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Fluffy Lie Chip</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°), Gap Wedge (52°)</p>
+                        <h4>Strategy</h4>
+                        <p>Softer swing motion into fluffy grass. Ball may sit deeper, less predictable contact.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Fluffy/longer grass around green</li>
+                            <li>Want soft landing, minimal roll</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Narrow, open 15-20 degrees</li>
+                            <li><strong>Ball position:</strong> Center</li>
+                            <li><strong>Weight:</strong> 60% front foot</li>
+                            <li><strong>Hands:</strong> Slightly ahead of ball</li>
+                            <li><strong>Grip:</strong> Choked down 2-3 inches</li>
+                            <li><strong>Posture:</strong> Relaxed</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Smooth, soft pendulum motion</li>
+                            <li><strong>Downswing:</strong> Continuous, accelerating slightly</li>
+                            <li><strong>Impact:</strong> Soft strike, enter grass slightly before ball</li>
+                            <li><strong>Follow-through:</strong> Smooth, slightly longer than tight chip</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Swinging too hard (ball flies too far)</li>
+                            <li>Hands too far ahead (delofts, firm contact)</li>
+                            <li>Hitting directly into grass before ball (chunked shot)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Check and Run',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Check and Run</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>8-Iron, 9-Iron, PW</p>
+                        <h4>Strategy</h4>
+                        <p>Land short of green, let ball roll and check momentum uphill. Useful when green slopes away or uphill.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Ball 20-30 yards from green</li>
+                            <li>Green slopes uphill or away</li>
+                            <li>Need controlled distance</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Narrow, square to slightly open</li>
+                            <li><strong>Ball position:</strong> Center to slightly back</li>
+                            <li><strong>Weight:</strong> 55% front foot</li>
+                            <li><strong>Hands:</strong> Slightly ahead</li>
+                            <li><strong>Grip:</strong> Full length or choked 1-2 inches</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Medium tempo, controlled</li>
+                            <li><strong>Downswing:</strong> Accelerate smoothly, hands ahead</li>
+                            <li><strong>Impact:</strong> Crisp strike, center face</li>
+                            <li><strong>Follow-through:</strong> Medium finish</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Hitting too soft (ball doesn't reach green)</li>
+                            <li>Hitting too hard (ball runs past uphill slope)</li>
+                            <li>Decelerating (unpredictable roll)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Check and Stop',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Check and Stop</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°), Gap Wedge (52°)</p>
+                        <h4>Strategy</h4>
+                        <p>Land on green with backspin. Minimize roll, stop near pin.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Ball 15-20 yards from green</li>
+                            <li>Want to stop quickly near pin</li>
+                            <li>Firm/normal green surface</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Narrow, open 20-30 degrees</li>
+                            <li><strong>Ball position:</strong> Forward of center</li>
+                            <li><strong>Weight:</strong> 60% front foot</li>
+                            <li><strong>Hands:</strong> Ahead of ball</li>
+                            <li><strong>Grip:</strong> Choked down 2-3 inches</li>
+                            <li><strong>Posture:</strong> Slightly taller</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full backswing, load energy</li>
+                            <li><strong>Downswing:</strong> Accelerate firmly through ball</li>
+                            <li><strong>Impact:</strong> Strike with forward shaft lean, spin emphasized</li>
+                            <li><strong>Follow-through:</strong> Full follow-through, high finish</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Decelerating (poor spin, weak contact)</li>
+                            <li>Ball too far back (reduces loft, firm contact)</li>
+                            <li>Taking turf before ball (inconsistent spin)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Standard Pitch',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Standard Pitch (30-60 Yards)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>PW, Sand Wedge (56°), Gap Wedge (52°)</p>
+                        <h4>Strategy</h4>
+                        <p>Full swing motion scaled to distance. Land and stop behavior controlled by club selection.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>30-60 yards from green</li>
+                            <li>Open landing area</li>
+                            <li>Normal conditions</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Square to slightly open</li>
+                            <li><strong>Ball position:</strong> Center to slightly forward</li>
+                            <li><strong>Weight:</strong> 50/50 at address</li>
+                            <li><strong>Hands:</strong> Neutral position</li>
+                            <li><strong>Grip:</strong> Full length</li>
+                            <li><strong>Posture:</strong> Normal</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Three-quarter to full swing (based on distance)</li>
+                            <li><strong>Downswing:</strong> Smooth tempo, accelerate</li>
+                            <li><strong>Impact:</strong> Strike center face, full acceleration</li>
+                            <li><strong>Follow-through:</strong> High finish, complete motion</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Swinging too hard (distance misjudged)</li>
+                            <li>Tension in swing (inconsistent)</li>
+                            <li>Deceleration (poor contact)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Flop Shot',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Flop Shot</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°) or Gap Wedge (52°) opened maximally</p>
+                        <h4>Strategy</h4>
+                        <p>Maximum loft, soft landing. Requires decent lie and green space behind pin.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Close to green (10-20 yards)</li>
+                            <li>Hazard between ball and landing zone</li>
+                            <li>Want soft landing, quick stop</li>
+                            <li>Fluffy lie (ball sitting up)</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Wide open, 45 degrees to target</li>
+                            <li><strong>Ball position:</strong> Forward of center (inside left heel)</li>
+                            <li><strong>Weight:</strong> 50% front foot, 50% back</li>
+                            <li><strong>Hands:</strong> Behind ball (increases loft)</li>
+                            <li><strong>Grip:</strong> Choked down 2 inches</li>
+                            <li><strong>Club face:</strong> Wide open (maximize loft)</li>
+                            <li><strong>Posture:</strong> Relaxed knees, upright posture</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Steep upright swing, hinge wrists early</li>
+                            <li><strong>Downswing:</strong> Swing hard but let club pass through (don't flip)</li>
+                            <li><strong>Impact:</strong> Hit ball with full acceleration, club face stays open</li>
+                            <li><strong>Follow-through:</strong> High finish, wrists still open</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Ball too far back (hard to get under)</li>
+                            <li>Club face closed too much (normal pitch, not flop)</li>
+                            <li>Decelerating (chunked shot)</li>
+                            <li>Tensing up (poor contact)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Flop (Fluffy)',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Flop Shot from Fluffy Lie</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°) or Gap Wedge (52°)</p>
+                        <h4>Strategy</h4>
+                        <p>Similar to flop shot but from deeper grass. Ball sits higher, easier contact expected.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Close to green (10-20 yards)</li>
+                            <li>Fluffy grass lie (ball elevated)</li>
+                            <li>Need soft landing immediately</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Wide open, 40-45 degrees</li>
+                            <li><strong>Ball position:</strong> Center to slightly forward</li>
+                            <li><strong>Weight:</strong> 50/50</li>
+                            <li><strong>Hands:</strong> Behind ball slightly</li>
+                            <li><strong>Grip:</strong> Choked down 1-2 inches</li>
+                            <li><strong>Club face:</strong> Open (increased loft)</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Upright, hinge wrists early</li>
+                            <li><strong>Downswing:</strong> Accelerate, feel the clubhead passing through</li>
+                            <li><strong>Impact:</strong> Enter grass first, then ball (soft motion)</li>
+                            <li><strong>Follow-through:</strong> High finish, smooth</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Swinging too hard (ball flies too far)</li>
+                            <li>Ball too far forward (inconsistent contact)</li>
+                            <li>Hitting down too steep (fat shot)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Punch Pitch',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Punch Pitch (Low Wind Shot)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>PW, 9-Iron, 8-Iron</p>
+                        <h4>Strategy</h4>
+                        <p>Low trajectory, penetrating wind shot. Controlled distance.</p>
+                        <h4>When to Play</h4>
+                        <ul>
+                            <li>Strong wind</li>
+                            <li>Need control over distance</li>
+                            <li>Open landing area (can roll)</li>
+                        </ul>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Narrow, square</li>
+                            <li><strong>Ball position:</strong> Back of center</li>
+                            <li><strong>Weight:</strong> 65% front foot</li>
+                            <li><strong>Hands:</strong> Well ahead of ball</li>
+                            <li><strong>Grip:</strong> Choked down 2-3 inches</li>
+                            <li><strong>Posture:</strong> Taller, less knee flex</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Three-quarter swing, compact</li>
+                            <li><strong>Downswing:</strong> Controlled tempo, keep hands ahead</li>
+                            <li><strong>Impact:</strong> Descending blow, forward shaft lean</li>
+                            <li><strong>Follow-through:</strong> Compact finish, controlled</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Ball too far forward (flying up)</li>
+                            <li>Hands releasing (adds loft)</li>
+                            <li>Swinging too hard (inconsistent)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Greenside Bunkers',
+                type: 'section',
+                content: `
+                    <div class="section-title">
+                        <h2>Greenside Bunker Shots</h2>
+                        <div class="section-links">
+                            <div class="section-link" onclick="goToPage(35)">Low Lip</div>
+                            <div class="section-link" onclick="goToPage(36)">High Lip</div>
+                            <div class="section-link" onclick="goToPage(37)">Tight Sand</div>
+                            <div class="section-link" onclick="goToPage(38)">Deep Sand</div>
+                            <div class="section-link" onclick="goToPage(39)">Plugged Lie</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: 'Bunker (Low Lip)',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Greenside Bunker (Low Lip)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°)</p>
+                        <h4>Strategy</h4>
+                        <p>Standard bunker shot, good lie, normal conditions. Focus is clean escape with soft landing.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Open 30-40 degrees, wider than normal</li>
+                            <li><strong>Ball position:</strong> Forward of center (inside left heel)</li>
+                            <li><strong>Weight:</strong> 60% front foot</li>
+                            <li><strong>Hands:</strong> Slightly behind ball (increases loft)</li>
+                            <li><strong>Grip:</strong> Firm, choked down 1-2 inches</li>
+                            <li><strong>Club face:</strong> Opened 15-20 degrees</li>
+                            <li><strong>Posture:</strong> Relaxed, bend knees slightly</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full swing, hinge wrists early for steep angle</li>
+                            <li><strong>Downswing:</strong> Accelerate, shallow out slightly before impact</li>
+                            <li><strong>Impact:</strong> Strike sand 2-3 inches behind ball, full acceleration</li>
+                            <li><strong>Follow-through:</strong> High finish, complete motion</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Hitting ball instead of sand (thin or clean contact, inconsistent)</li>
+                            <li>Decelerating (heavy, short shot)</li>
+                            <li>Club face closed (ball rockets, no loft)</li>
+                            <li>Stance not open enough (pulls left, poor trajectory)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Bunker (High Lip)',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Greenside Bunker (High Lip)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°) or Gap Wedge (52°) opened maximally</p>
+                        <h4>Strategy</h4>
+                        <p>Focus entirely on clearing lip. Sacrifice some distance for clearing.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Open 40-45 degrees, wide</li>
+                            <li><strong>Ball position:</strong> Forward of center (inside left heel)</li>
+                            <li><strong>Weight:</strong> 60% front foot</li>
+                            <li><strong>Hands:</strong> Slightly behind ball</li>
+                            <li><strong>Grip:</strong> Firm, choked down 2 inches</li>
+                            <li><strong>Club face:</strong> Maximally open (SW ~70 degrees effective)</li>
+                            <li><strong>Posture:</strong> Relaxed</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, steep swing, early wrist hinge</li>
+                            <li><strong>Downswing:</strong> Accelerate firmly through sand</li>
+                            <li><strong>Impact:</strong> Strike sand 1-2 inches behind ball (close to ball)</li>
+                            <li><strong>Follow-through:</strong> High finish, feel the lift</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Trying to hit ball (thin shot, won't clear)</li>
+                            <li>Decelerating (heavy, weak shot)</li>
+                            <li>Hands over ball at address (reduces loft)</li>
+                            <li>Aiming at lip (tensioning, poor contact)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Bunker (Tight Sand)',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Greenside Bunker (Tight Sand)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°), Gap Wedge (52°)</p>
+                        <h4>Strategy</h4>
+                        <p>Firm sand requires different approach (less bounce needed). Crisp contact expected.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Open 25-30 degrees (less open than soft sand)</li>
+                            <li><strong>Ball position:</strong> Center to slightly forward</li>
+                            <li><strong>Weight:</strong> 55% front foot</li>
+                            <li><strong>Hands:</strong> Neutral to slightly behind</li>
+                            <li><strong>Grip:</strong> Firm, full length or choked 1 inch</li>
+                            <li><strong>Club face:</strong> Minimal opening (10-15 degrees)</li>
+                            <li><strong>Posture:</strong> Normal</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Three-quarter to full swing, controlled</li>
+                            <li><strong>Downswing:</strong> Accelerate, hit ball first (firm sand allows)</li>
+                            <li><strong>Impact:</strong> Strike on ball/thin sand contact, crisp</li>
+                            <li><strong>Follow-through:</strong> Smooth, controlled</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Over-opening club face (air it too high)</li>
+                            <li>Taking too much sand (firm sand doesn't need it)</li>
+                            <li>Decelerating (fat contact)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Bunker (Deep Sand)',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Greenside Bunker (Deep Sand)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°), Gap Wedge (52°)</p>
+                        <h4>Strategy</h4>
+                        <p>Deep, fluffy sand absorbs force. Use full swing, more sand contact expected.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Open 30-40 degrees, wide</li>
+                            <li><strong>Ball position:</strong> Forward of center</li>
+                            <li><strong>Weight:</strong> 60% front foot</li>
+                            <li><strong>Hands:</strong> Slightly behind ball (increases loft)</li>
+                            <li><strong>Grip:</strong> Firm, choked down 2 inches</li>
+                            <li><strong>Club face:</strong> Open 20-25 degrees</li>
+                            <li><strong>Posture:</strong> Relaxed, stable</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, steep swing, early hinge</li>
+                            <li><strong>Downswing:</strong> Aggressive acceleration through sand</li>
+                            <li><strong>Impact:</strong> Strike sand 3-4 inches behind ball, let sand cushion</li>
+                            <li><strong>Follow-through:</strong> Full high finish</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Hitting ball (thin contact, inconsistent)</li>
+                            <li>Insufficient acceleration (weak, short shot)</li>
+                            <li>Stance not open (pulls left, trajectory low)</li>
+                            <li>Over-cautious swing (hesitation causes poor contact)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Plugged Lie',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Plugged Lie in Bunker</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°), Gap Wedge (52°)</p>
+                        <h4>Strategy</h4>
+                        <p>Ball buried in sand, cannot escape with normal technique. Hit down aggressively, accept lower trajectory.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Square to slightly open, normal width</li>
+                            <li><strong>Ball position:</strong> Center to slightly back</li>
+                            <li><strong>Weight:</strong> 60% front foot</li>
+                            <li><strong>Hands:</strong> Well ahead of ball</li>
+                            <li><strong>Grip:</strong> Firm, choked down 3 inches</li>
+                            <li><strong>Club face:</strong> Minimal opening or square (less loft)</li>
+                            <li><strong>Posture:</strong> Taller, less knee flex</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Three-quarter to full swing, controlled</li>
+                            <li><strong>Downswing:</strong> Accelerate downward aggressively</li>
+                            <li><strong>Impact:</strong> Strike down on ball/sand behind, forward shaft lean</li>
+                            <li><strong>Follow-through:</strong> Compact, controlled (ball doesn't go far)</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Using open club face (won't penetrate sand)</li>
+                            <li>Decelerating (stuck in bunker)</li>
+                            <li>Expecting normal distance (accept shorter result)</li>
+                            <li>Swinging too hard (lose control)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Ball Above Feet',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Ball Above Your Feet (Around Green)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°), Gap Wedge (52°)</p>
+                        <h4>Strategy</h4>
+                        <p>Ball above feet pulls/draws naturally. Adjust aim right of target.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Square to target, perpendicular to slope</li>
+                            <li><strong>Ball position:</strong> Center</li>
+                            <li><strong>Weight:</strong> 50/50</li>
+                            <li><strong>Hands:</strong> Choked down 2-3 inches (shorter reach)</li>
+                            <li><strong>Grip:</strong> Firm</li>
+                            <li><strong>Posture:</strong> Bend more at hips, knees slightly more bent</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Controlled, swing perpendicular to slope</li>
+                            <li><strong>Downswing:</strong> Smooth, avoid over-acceleration</li>
+                            <li><strong>Impact:</strong> Expect pull/draw, strike on line</li>
+                            <li><strong>Follow-through:</strong> Smooth, balanced</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Not adjusting aim (ball pulls left)</li>
+                            <li>Swinging hard (over-pulls)</li>
+                            <li>Normal grip (longer reach causes poor contact)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Ball Below Feet',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Ball Below Your Feet (Around Green)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>Sand Wedge (56°), Gap Wedge (52°)</p>
+                        <h4>Strategy</h4>
+                        <p>Ball below feet fades/slices naturally. Adjust aim left of target.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Square to target, perpendicular to slope</li>
+                            <li><strong>Ball position:</strong> Center</li>
+                            <li><strong>Weight:</strong> More on balls of feet</li>
+                            <li><strong>Hands:</strong> Full grip (need reach)</li>
+                            <li><strong>Grip:</strong> Firm but not tense</li>
+                            <li><strong>Posture:</strong> More upright, less bend at hips, knees slightly flexed</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Controlled, swing perpendicular to slope</li>
+                            <li><strong>Downswing:</strong> Smooth, tempo controlled</li>
+                            <li><strong>Impact:</strong> Expect fade, strike on line</li>
+                            <li><strong>Follow-through:</strong> Smooth, balanced</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Not adjusting aim (ball fades right)</li>
+                            <li>Swinging hard (over-fades)</li>
+                            <li>Losing balance (unstable swing from slope)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'From Thick Rough',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>From the Rough (Thick Grass)</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>7-Iron, 8-Iron, 9-Iron, PW, SW</p>
+                        <h4>Strategy</h4>
+                        <p>Ball may have grass behind it, reducing control. Swing slightly harder to compensate.</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Square, normal width</li>
+                            <li><strong>Ball position:</strong> Center to slightly forward</li>
+                            <li><strong>Weight:</strong> 50/50</li>
+                            <li><strong>Grip:</strong> Firm (grass will grab club)</li>
+                            <li><strong>Posture:</strong> Normal</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Full, smooth, escape rough first priority</li>
+                            <li><strong>Downswing:</strong> Accelerate firmly, hit through grass</li>
+                            <li><strong>Impact:</strong> Strike ball cleanly, grass may resist</li>
+                            <li><strong>Follow-through:</strong> Smooth, complete motion</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Trying to shape shot (rough negates shape)</li>
+                            <li>Decelerating (grass takes ball short)</li>
+                            <li>Club face closing (grass pressure closes face)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'From Hardpan',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>From Hardpan/Bare Lie</h3>
+                        <h4>Recommended Clubs</h4>
+                        <p>PW, Sand Wedge (56°), Gap Wedge (52°)</p>
+                        <h4>Strategy</h4>
+                        <p>Very firm surface, minimal give. Need clean contact (fat shot impossible).</p>
+                        <h4>Setup</h4>
+                        <ul>
+                            <li><strong>Stance:</strong> Square, normal width</li>
+                            <li><strong>Ball position:</strong> Center</li>
+                            <li><strong>Weight:</strong> 50/50 at address, then shift forward smoothly</li>
+                            <li><strong>Hands:</strong> Slightly ahead of ball</li>
+                            <li><strong>Grip:</strong> Firm</li>
+                            <li><strong>Posture:</strong> Normal</li>
+                        </ul>
+                        <h4>Swing Mechanics</h4>
+                        <ul>
+                            <li><strong>Backswing:</strong> Controlled, three-quarter swing</li>
+                            <li><strong>Downswing:</strong> Smooth tempo, hands maintain lead</li>
+                            <li><strong>Impact:</strong> Strike ball cleanly, avoid thin (contact critical)</li>
+                            <li><strong>Follow-through:</strong> Smooth, controlled</li>
+                        </ul>
+                        <h4>Common Mistakes</h4>
+                        <ul>
+                            <li>Hands behind ball (tops/thins the shot)</li>
+                            <li>Swinging too hard (uncontrollable)</li>
+                            <li>Decelerating (catches edge, poor contact)</li>
+                            <li>Ball too far forward (too much loft, short shot)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Appendix',
+                type: 'section',
+                content: `
+                    <div class="section-title">
+                        <h2>Appendix</h2>
+                        <p>Tools & References</p>
+                        <div class="section-links">
+                            <div class="section-link" onclick="openModal('clubSetupModal')">⚙️ Club Setup</div>
+                            <div class="section-link" onclick="openModal('yardageModal')">📏 Yardage Chart</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: 'Club Setup',
+                type: 'appendix',
+                content: `
+                    <div class="page-content">
+                        <h3>Club Setup</h3>
+                        <p>Configure your clubs and customize your setup below.</p>
+                        <div id="setupClubList" class="club-list"></div>
+                        <div class="modal-buttons">
+                            <button class="btn btn-primary" onclick="openModal('clubSetupModal')">Edit Setup</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: 'Yardage Chart',
+                type: 'appendix',
+                content: `
+                    <div class="page-content">
+                        <h3>Yardage Chart</h3>
+                        <p>JT's Club Yardages</p>
+                        <table class="yardage-table">
+                            <thead>
+                                <tr>
+                                    <th>Club</th>
+                                    <th>Carry</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="yardageTableBody">
+                            </tbody>
+                        </table>
+                        <div class="modal-buttons">
+                            <button class="btn btn-primary" onclick="openModal('yardageModal')">Edit Yardages</button>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        let currentPage = 0;
+        let startY = 0;
+        let activeClubs = [];
+
+        function initializeApp() {
+            renderPages();
+            loadClubSetup();
+            updatePageTitle();
+            setupCategoryBar();
+            populateClubList();
+            populateYardageTable();
+            addSwipeListener();
+        }
+
+        function renderPages() {
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = '';
+            PAGES_DATA.forEach((page, index) => {
+                const pageDiv = document.createElement('div');
+                pageDiv.className = 'page' + (index === currentPage ? ' active' : '');
+                pageDiv.innerHTML = page.content;
+                contentArea.appendChild(pageDiv);
+            });
+        }
+
+        function goToPage(pageNum) {
+            currentPage = Math.max(0, Math.min(pageNum, PAGES_DATA.length - 1));
+            updatePages();
+            updatePageTitle();
+            updateCategoryBar();
+        }
+
+        function updatePages() {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach((page, index) => {
+                page.classList.remove('active', 'prev');
+                if (index === currentPage) {
+                    page.classList.add('active');
+                } else if (index < currentPage) {
+                    page.classList.add('prev');
+                }
+            });
+        }
+
+        function updatePageTitle() {
+            document.getElementById('pageTitle').textContent = PAGES_DATA[currentPage].title || 'Golfer\'s Notebook';
+            updatePageCounter();
+            updateNavButtons();
+        }
+
+        function updatePageCounter() {
+            document.getElementById('pageCounter').textContent = (currentPage + 1) + ' / ' + PAGES_DATA.length;
+        }
+
+        function updateNavButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === PAGES_DATA.length - 1;
+        }
+
+        function setupCategoryBar() {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const section = parseInt(this.dataset.section);
+                    goToPage(section);
+                });
+            });
+        }
+
+        function updateCategoryBar() {
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            categoryBtns.forEach(btn => {
+                const section = parseInt(btn.dataset.section);
+                btn.classList.remove('active');
+                if (section <= currentPage && currentPage < (section + 10)) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function addSwipeListener() {
+            document.addEventListener('touchstart', function(e) {
+                startY = e.touches[0].clientY;
+            }, false);
+
+            document.addEventListener('touchend', function(e) {
+                const endY = e.changedTouches[0].clientY;
+                if (startY - endY > 50) {
+                    goToPage(currentPage + 1);
+                } else if (endY - startY > 50) {
+                    goToPage(currentPage - 1);
+                }
+            }, false);
+        }
+
+        function populateClubList() {
+            const clubList = document.getElementById('clubList');
+            clubList.innerHTML = '';
+            CLUBS.forEach((club, index) => {
+                const item = document.createElement('div');
+                item.className = 'club-item';
+                const isActive = activeClubs.includes(index);
+                item.innerHTML = `
+                    <input type="checkbox" id="club${index}" ${isActive ? 'checked' : ''}>
+                    <label for="club${index}">${club.name}</label>
+                    <span class="club-yardage">${club.carry}y carry</span>
+                `;
+                clubList.appendChild(item);
+            });
+        }
+
+        function populateYardageTable() {
+            const tbody = document.getElementById('yardageTableBody');
+            tbody.innerHTML = '';
+            CLUBS.forEach((club, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${club.name}</td>
+                    <td>${club.carry}y</td>
+                    <td>${club.total}y</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function saveClubSetup() {
+            activeClubs = [];
+            document.querySelectorAll('#clubList input[type="checkbox"]').forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    activeClubs.push(index);
+                }
+            });
+            localStorage.setItem('activeClubs', JSON.stringify(activeClubs));
+            closeModal('clubSetupModal');
+        }
+
+        function loadClubSetup() {
+            const saved = localStorage.getItem('activeClubs');
+            if (saved) {
+                activeClubs = JSON.parse(saved);
+            } else {
+                activeClubs = Array.from(Array(CLUBS.length).keys());
+                localStorage.setItem('activeClubs', JSON.stringify(activeClubs));
+            }
+        }
+
+        function saveYardages() {
+            closeModal('yardageModal');
+        }
+
+        document.getElementById('clubSetupBtn').addEventListener('click', function() {
+            populateClubList();
+            openModal('clubSetupModal');
+        });
+
+        document.getElementById('yardageBtn').addEventListener('click', function() {
+            openModal('yardageModal');
+        });
+
+        window.addEventListener('click', function(event) {
+            const clubModal = document.getElementById('clubSetupModal');
+            const yardageModal = document.getElementById('yardageModal');
+            if (event.target == clubModal) {
+                closeModal('clubSetupModal');
+            }
+            if (event.target == yardageModal) {
+                closeModal('yardageModal');
+            }
+        });
+
+        initializeApp();
+    </script>
+</body>
+</html>
