@@ -758,7 +758,7 @@
                                 <button class="quick-link-btn" onclick="goToPage(1)">Off Tee</button>
                                 <button class="quick-link-btn" onclick="goToPage(9)">Fairway</button>
                                 <button class="quick-link-btn" onclick="goToPage(23)">Around Green</button>
-                                <button class="quick-link-btn" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); border-color: rgba(255,255,255,0.4);" onclick="window.open('https://claude.ai/code/artifact/ecf65e4e-1464-46e3-a304-68a2c9e1e062', '_blank')">🎯 Shot Recommender</button>
+                                <button class="quick-link-btn" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); border-color: rgba(255,255,255,0.4);" onclick="window.location.href='shot-recommender.html'">🎯 Shot Recommender</button>
                             </div>
                             <div class="author-info">
                                 Personalized for JT<br>
@@ -2702,6 +2702,202 @@
                             <button class="btn btn-primary" onclick="openModal('yardageModal')">Edit Yardages</button>
                         </div>
                     </div>
+                `
+            },
+            {
+                title: 'Shot Recommender',
+                type: 'tool',
+                content: `
+                    <div class="page-content" id="shotRecContainer" style="max-height: 100%; overflow-y: auto; font-size: 12px;">
+                        <h3>🎯 Shot Recommender</h3>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 12px;">
+                            <div>
+                                <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">LOCATION</label>
+                                <select id="sr-location" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                    <option value="">Select location...</option>
+                                    <option value="tee">Off the Tee</option>
+                                    <option value="fairway">Fairway</option>
+                                    <option value="rough">Rough</option>
+                                    <option value="trees">Under Trees</option>
+                                    <option value="fairway-bunker">Fairway Bunker</option>
+                                    <option value="green">Around the Green</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">DISTANCE TO PIN (Y)</label>
+                                <input type="number" id="sr-distance" min="0" max="500" placeholder="e.g., 147" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">LIE</label>
+                                <select id="sr-lie" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                    <option value="">Select lie...</option>
+                                    <option value="clean">Clean</option>
+                                    <option value="thick">Thick/Heavy</option>
+                                    <option value="tight">Tight/Hardpan</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">ELEVATION CHANGE (FT)</label>
+                                <input type="number" id="sr-elev" min="-100" max="100" placeholder="e.g., +25" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">WIND</label>
+                                <select id="sr-wind" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                    <option value="none">None</option>
+                                    <option value="light">Light (5-10 mph)</option>
+                                    <option value="moderate">Moderate (11-15 mph)</option>
+                                    <option value="strong">Strong (16+ mph)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">WIND DIRECTION</label>
+                                <select id="sr-winddir" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                    <option value="none">N/A</option>
+                                    <option value="headwind">Headwind</option>
+                                    <option value="tailwind">Tailwind</option>
+                                    <option value="left-to-right">Left to Right</option>
+                                    <option value="right-to-left">Right to Left</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">PIN LOCATION</label>
+                                <select id="sr-pin" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                    <option value="">Select...</option>
+                                    <option value="front">Front</option>
+                                    <option value="middle">Middle</option>
+                                    <option value="back">Back</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">GREEN SHAPE</label>
+                                <select id="sr-green" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                    <option value="">Select...</option>
+                                    <option value="flat">Flat</option>
+                                    <option value="uphill">Uphill</option>
+                                    <option value="running-away">Running Away</option>
+                                    <option value="mound">On a Mound</option>
+                                    <option value="dwell">In Depression</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="sr-result" style="margin-top: 16px; padding: 12px; background: #f0f8f5; border-left: 3px solid #27ae60; border-radius: 4px; min-height: 80px; display: none;">
+                            <div id="sr-club" style="font-size: 14px; font-weight: 600; color: #27ae60; margin-bottom: 6px;"></div>
+                            <div id="sr-carry" style="font-size: 12px; color: #2c3e50; margin-bottom: 4px;"><strong>Carry:</strong> <span id="sr-carry-val">—</span></div>
+                            <div id="sr-total" style="font-size: 12px; color: #2c3e50; margin-bottom: 6px;"><strong>Total:</strong> <span id="sr-total-val">—</span></div>
+                            <div id="sr-strategy" style="font-size: 11px; color: #555; line-height: 1.5;"></div>
+                        </div>
+                    </div>
+                    <script>
+                        const srElements = {
+                            location: document.getElementById('sr-location'),
+                            distance: document.getElementById('sr-distance'),
+                            lie: document.getElementById('sr-lie'),
+                            elev: document.getElementById('sr-elev'),
+                            wind: document.getElementById('sr-wind'),
+                            winddir: document.getElementById('sr-winddir'),
+                            pin: document.getElementById('sr-pin'),
+                            green: document.getElementById('sr-green'),
+                            result: document.getElementById('sr-result'),
+                            club: document.getElementById('sr-club'),
+                            carry: document.getElementById('sr-carry-val'),
+                            total: document.getElementById('sr-total-val'),
+                            strategy: document.getElementById('sr-strategy')
+                        };
+
+                        function getClubForDistance(distance, location) {
+                            if (location === 'tee') {
+                                if (distance >= 220) return 'Driver';
+                                if (distance >= 190) return 'Hybrid';
+                                if (distance >= 150) return '3-Wood';
+                            } else if (location === 'fairway') {
+                                if (distance >= 180) return '5-Iron';
+                                if (distance >= 140) return '7-Iron';
+                                if (distance >= 100) return '9-Iron';
+                                if (distance >= 70) return 'PW';
+                            } else if (location === 'rough') {
+                                if (distance >= 140) return '6-Iron';
+                                if (distance >= 90) return '8-Iron';
+                                if (distance >= 60) return 'PW';
+                            }
+                            return 'PW';
+                        }
+
+                        function getCarryDistance(club, distance) {
+                            const carryPercent = {
+                                'Driver': 0.95, 'Hybrid': 0.92, '3-Wood': 0.90,
+                                '5-Iron': 0.85, '6-Iron': 0.84, '7-Iron': 0.82, '8-Iron': 0.80, '9-Iron': 0.78,
+                                'PW': 0.75
+                            };
+                            const percent = carryPercent[club] || 0.75;
+                            return Math.round(distance * percent);
+                        }
+
+                        function getTotalDistance(carry, lie, greenTopo) {
+                            let rollPercent = 0.15;
+                            if (lie === 'thick') rollPercent = 0.05;
+                            else if (lie === 'tight') rollPercent = 0.20;
+                            else if (lie === 'clean') rollPercent = 0.18;
+                            if (greenTopo === 'running-away') rollPercent += 0.08;
+                            else if (greenTopo === 'uphill') rollPercent -= 0.05;
+                            else if (greenTopo === 'dwell') rollPercent -= 0.08;
+                            rollPercent = Math.max(0.02, rollPercent);
+                            const roll = Math.round(carry * rollPercent);
+                            return carry + roll;
+                        }
+
+                        function updateShotRec() {
+                            const location = srElements.location.value;
+                            const distance = parseInt(srElements.distance.value) || 0;
+                            const lie = srElements.lie.value;
+                            const elev = parseInt(srElements.elev.value) || 0;
+                            const wind = srElements.wind.value;
+                            const winddir = srElements.winddir.value;
+                            const pin = srElements.pin.value;
+                            const green = srElements.green.value;
+
+                            if (!location || distance <= 0) {
+                                srElements.result.style.display = 'none';
+                                return;
+                            }
+
+                            let club = getClubForDistance(distance, location);
+                            let adjustedDistance = distance;
+
+                            if (elev > 0) adjustedDistance += Math.abs(elev) * 2;
+                            else if (elev < 0) adjustedDistance -= Math.abs(elev) * 1.5;
+
+                            if (wind === 'strong') {
+                                if (winddir === 'headwind') adjustedDistance += 20;
+                                else if (winddir === 'tailwind') adjustedDistance -= 15;
+                            } else if (wind === 'moderate') {
+                                if (winddir === 'headwind') adjustedDistance += 10;
+                                else if (winddir === 'tailwind') adjustedDistance -= 8;
+                            }
+
+                            const carry = getCarryDistance(club, adjustedDistance);
+                            const total = getTotalDistance(carry, lie, green);
+
+                            srElements.club.textContent = club;
+                            srElements.carry.textContent = carry + 'y';
+                            srElements.total.textContent = total + 'y';
+
+                            let strategy = 'Execute with commitment.';
+                            if (location === 'tee' && distance > 150) strategy = 'Maximize distance. Smooth tempo.';
+                            else if (location === 'fairway' && distance > 100) strategy = 'Accuracy over distance. Land center green.';
+                            else if (distance <= 50) strategy = distance > 20 ? 'Land soft, control distance.' : 'Land short, roll to hole.';
+
+                            if (elev > 0) strategy += ' Uphill—club adjusted.';
+                            if (wind === 'strong') strategy += ' Strong wind—club adjusted.';
+
+                            srElements.strategy.textContent = strategy;
+                            srElements.result.style.display = 'block';
+                        }
+
+                        [srElements.location, srElements.distance, srElements.lie, srElements.elev, srElements.wind, srElements.winddir, srElements.pin, srElements.green].forEach(el => {
+                            if (el) el.addEventListener('change', updateShotRec);
+                            if (el && el.type === 'number') el.addEventListener('input', updateShotRec);
+                        });
+                    </script>
                 `
             }
         ];
