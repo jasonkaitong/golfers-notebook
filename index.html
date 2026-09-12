@@ -2798,6 +2798,12 @@
             populateClubList();
             populateYardageTable();
             addSwipeListener();
+
+            // Set up Shot Analyzer button listener after pages are rendered
+            const calculateBtn = document.getElementById('sa-calculate-btn');
+            if (calculateBtn) {
+                calculateBtn.addEventListener('click', updateShotAnalyzer);
+            }
         }
 
         function renderPages() {
@@ -3054,12 +3060,6 @@ function updatePages() {
 
             document.getElementById('sa-strategy').textContent = strategy;
             document.getElementById('sa-result').style.display = 'block';
-        }
-
-        // Set up Shot Analyzer button listener
-        const calculateBtn = document.getElementById('sa-calculate-btn');
-        if (calculateBtn) {
-            calculateBtn.addEventListener('click', updateShotAnalyzer);
         }
 
         document.getElementById('clubSetupBtn').addEventListener('click', function() {
