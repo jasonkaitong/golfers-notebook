@@ -2774,12 +2774,14 @@
                                 </select>
                             </div>
                         </div>
-                        <button id="sa-calculate-btn" style="width: 100%; padding: 10px; background: #27ae60; color: white; border: none; border-radius: 4px; font-weight: 600; font-size: 12px; cursor: pointer; margin-top: 6px;">Calculate Shot</button>
-                        <div id="sa-result" style="margin-top: 12px; padding: 12px; background: #f0f8f5; border-left: 3px solid #27ae60; border-radius: 4px; min-height: 80px; display: none;">
+                        <button id="sa-calculate-btn" onclick="updateShotAnalyzer()" style="width: 100%; padding: 10px; background: #27ae60; color: white; border: none; border-radius: 4px; font-weight: 600; font-size: 12px; cursor: pointer; margin-top: 6px;">Calculate Shot</button>
+                        <div id="sa-result" style="margin-top: 12px; padding: 12px; background: #f0f8f5; border-left: 3px solid #27ae60; border-radius: 4px; display: none;">
                             <div id="sa-club" style="font-size: 14px; font-weight: 600; color: #27ae60; margin-bottom: 6px;"></div>
+                            <div id="sa-swings" style="font-size: 11px; color: #27ae60; margin-bottom: 8px; font-style: italic;"></div>
                             <div id="sa-carry" style="font-size: 12px; color: #2c3e50; margin-bottom: 4px;"><strong>Carry:</strong> <span id="sa-carry-val">—</span></div>
-                            <div id="sa-total" style="font-size: 12px; color: #2c3e50; margin-bottom: 6px;"><strong>Total:</strong> <span id="sa-total-val">—</span></div>
-                            <div id="sa-strategy" style="font-size: 11px; color: #555; line-height: 1.5;"></div>
+                            <div id="sa-total" style="font-size: 12px; color: #2c3e50; margin-bottom: 8px;"><strong>Total:</strong> <span id="sa-total-val">—</span></div>
+                            <div id="sa-strategy" style="font-size: 11px; color: #555; line-height: 1.5; margin-bottom: 8px;"></div>
+                            <div id="sa-links" style="font-size: 10px; color: #27ae60; border-top: 1px solid #d0e8e0; padding-top: 6px;"></div>
                         </div>
                     </div>
                 `
@@ -2978,6 +2980,31 @@ function updatePages() {
         }
 
         // Shot Analyzer Functions
+        function getSASwingOptions(club, distance) {
+            const swingOptions = {
+                'Driver': ['Soft drive', 'Full driver', 'Punch drive'],
+                'Hybrid': ['Soft hybrid', 'Full hybrid', '3/4 swing'],
+                '3-Wood': ['Soft 3W', 'Full 3W', '3/4 swing'],
+                '5-Iron': ['Soft 6', 'Full 5', '3/4 5'],
+                '6-Iron': ['Soft 7', 'Full 6', '3/4 6'],
+                '7-Iron': ['Soft 8', 'Full 7', '3/4 7'],
+                '8-Iron': ['Soft 9', 'Full 8', '3/4 8'],
+                '9-Iron': ['Soft PW', 'Full 9', '3/4 9'],
+                'PW': ['Soft PW', 'Full PW', '3/4 PW']
+            };
+            return swingOptions[club] || ['Soft', 'Full', '3/4'];
+        }
+
+        function getSAShotType(location, distance, wind, lie) {
+            if (location === 'tee' && distance > 200) return 'drive';
+            if (distance <= 50 && lie === 'clean') return 'chip';
+            if (distance <= 100 && lie === 'clean') return 'approach';
+            if (location === 'rough' || lie === 'thick') return 'recovery';
+            if (wind === 'strong') return 'punch';
+            return 'standard';
+        }
+
+        // Shot Analyzer Functions
         function getSAClubForDistance(distance, location) {
             if (location === 'tee') {
                 if (distance >= 220) return 'Driver';
@@ -3050,6 +3077,11 @@ function updatePages() {
             const total = getSATotalDistance(carry, lie, green);
 
             document.getElementById('sa-club').textContent = club;
+
+            // Add swing options
+            const swings = getSASwingOptions(club, adjustedDistance);
+            document.getElementById('sa-swings').textContent = 'Swings: ' + swings.join(' / ');
+
             document.getElementById('sa-carry-val').textContent = carry + 'y';
             document.getElementById('sa-total-val').textContent = total + 'y';
 
@@ -3062,6 +3094,17 @@ function updatePages() {
             if (wind === 'strong') strategy += ' Strong wind—club adjusted.';
 
             document.getElementById('sa-strategy').textContent = strategy;
+
+            // Add shot type guidance links
+            const shotType = getSAShotType(location, distance, wind, lie);
+            let links = '';
+            if (shotType === 'punch') links = '📖 <a href="#" onclick="goToPage(PAGES_DATA.findIndex(p => p.title === \\'Punch Shot\\'))">Punch Shot Guide</a>';
+            else if (shotType === 'chip') links = '📖 <a href="#" onclick="goToPage(PAGES_DATA.findIndex(p => p.title === \\'Chip Shot\\'))">Chip Shot Guide</a>';
+            else if (shotType === 'recovery') links = '📖 <a href="#" onclick="goToPage(PAGES_DATA.findIndex(p => p.title === \\'Recovery Shot\\'))">Recovery Shot Guide</a>';
+
+            if (links) document.getElementById('sa-links').innerHTML = links;
+            else document.getElementById('sa-links').innerHTML = '';
+
             document.getElementById('sa-result').style.display = 'block';
         }
 
