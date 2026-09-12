@@ -166,34 +166,54 @@
             background: white;
             padding: 40px 20px 30px 30px;
             border-radius: 0;
-            box-shadow: none;
+            box-shadow:
+                inset 30px 10px 0 -8px repeating-linear-gradient(
+                    to right,
+                    #a0a0a0 0px,
+                    #a0a0a0 5px,
+                    #d0d0d0 5px,
+                    #d0d0d0 7px,
+                    #808080 7px,
+                    #808080 9px,
+                    transparent 9px,
+                    transparent 16px
+                ),
+                0 10px 3px rgba(0,0,0,0.15);
             position: relative;
             font-family: 'Georgia', serif;
             line-height: 1.6;
             min-height: 100%;
-            border-top: 2px solid #ddd;
+        }
+
+        .page {
+            box-shadow: inset 0 8px 0 -6px rgba(100,100,100,0.3);
         }
 
         .page::before {
             content: '';
             position: absolute;
-            top: 30px;
+            top: 8px;
             left: 30px;
             right: 20px;
-            height: 8px;
+            height: 12px;
             background: repeating-linear-gradient(
                 to right,
-                #999 0px,
-                #999 6px,
-                #ccc 6px,
-                #ccc 8px,
-                #888 8px,
-                #888 10px,
-                transparent 10px,
-                transparent 18px
+                #a0a0a0 0px,
+                #a0a0a0 5px,
+                #d0d0d0 5px,
+                #d0d0d0 7px,
+                #808080 7px,
+                #808080 9px,
+                transparent 9px,
+                transparent 16px
             );
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.4), 0 2px 3px rgba(0,0,0,0.3);
             z-index: 10;
+            border-radius: 2px;
+        }
+
+        .cover-page::before {
+            display: none;
         }
 
         .page-content::after {
