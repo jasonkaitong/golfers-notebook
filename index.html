@@ -678,7 +678,7 @@
             <div class="header-buttons">
                 <button class="header-btn" id="clubSetupBtn">⚙️ Setup</button>
                 <button class="header-btn" id="yardageBtn">📏 Yardage</button>
-                <button class="header-btn" onclick="window.open('https://claude.ai/code/artifact/ecf65e4e-1464-46e3-a304-68a2c9e1e062', '_blank')">🎯 Shot Analyzer</button>
+                <button class="header-btn" onclick="goToPage(47)">🎯 Shot Analyzer</button>
             </div>
         </div>
 
@@ -688,6 +688,7 @@
             <button class="category-btn" data-section="9">Fairway</button>
             <button class="category-btn" data-section="23">Around Green</button>
             <button class="category-btn" data-section="46">Appendix</button>
+            <button class="category-btn" data-section="47">Shot Analyzer</button>
         </div>
 
         <div class="content-area" id="contentArea">
@@ -2957,6 +2958,104 @@ function updatePages() {
                 button.textContent = tipsContent.classList.contains('expanded') ? '💡 Hide Tips' : '💡 Show Tips';
             }
         }
+
+        // Shot Analyzer Functions
+        function getSAClubForDistance(distance, location) {
+            if (location === 'tee') {
+                if (distance >= 220) return 'Driver';
+                if (distance >= 190) return 'Hybrid';
+                if (distance >= 150) return '3-Wood';
+            } else if (location === 'fairway') {
+                if (distance >= 180) return '5-Iron';
+                if (distance >= 140) return '7-Iron';
+                if (distance >= 100) return '9-Iron';
+                if (distance >= 70) return 'PW';
+            } else if (location === 'rough') {
+                if (distance >= 140) return '6-Iron';
+                if (distance >= 90) return '8-Iron';
+                if (distance >= 60) return 'PW';
+            }
+            return 'PW';
+        }
+
+        function getSACarryDistance(club, distance) {
+            const carryPercent = {
+                'Driver': 0.95, 'Hybrid': 0.92, '3-Wood': 0.90,
+                '5-Iron': 0.85, '6-Iron': 0.84, '7-Iron': 0.82, '8-Iron': 0.80, '9-Iron': 0.78,
+                'PW': 0.75
+            };
+            const percent = carryPercent[club] || 0.75;
+            return Math.round(distance * percent);
+        }
+
+        function getSATotalDistance(carry, lie, greenTopo) {
+            let rollPercent = 0.15;
+            if (lie === 'thick') rollPercent = 0.05;
+            else if (lie === 'tight') rollPercent = 0.20;
+            else if (lie === 'clean') rollPercent = 0.18;
+            if (greenTopo === 'running-away') rollPercent += 0.08;
+            else if (greenTopo === 'uphill') rollPercent -= 0.05;
+            rollPercent = Math.max(0.02, rollPercent);
+            const roll = Math.round(carry * rollPercent);
+            return carry + roll;
+        }
+
+        function updateShotAnalyzer() {
+            const location = document.getElementById('sa-location').value;
+            const distance = parseInt(document.getElementById('sa-distance').value) || 0;
+            const lie = document.getElementById('sa-lie').value;
+            const elev = parseInt(document.getElementById('sa-elev').value) || 0;
+            const wind = document.getElementById('sa-wind').value;
+            const winddir = document.getElementById('sa-winddir').value;
+            const green = document.getElementById('sa-green').value;
+
+            if (!location || distance <= 0) {
+                document.getElementById('sa-result').style.display = 'none';
+                return;
+            }
+
+            let club = getSAClubForDistance(distance, location);
+            let adjustedDistance = distance;
+
+            if (elev > 0) adjustedDistance += Math.abs(elev) * 2;
+            else if (elev < 0) adjustedDistance -= Math.abs(elev) * 1.5;
+
+            if (wind === 'strong') {
+                if (winddir === 'headwind') adjustedDistance += 20;
+                else if (winddir === 'tailwind') adjustedDistance -= 15;
+            } else if (wind === 'moderate') {
+                if (winddir === 'headwind') adjustedDistance += 10;
+                else if (winddir === 'tailwind') adjustedDistance -= 8;
+            }
+
+            const carry = getSACarryDistance(club, adjustedDistance);
+            const total = getSATotalDistance(carry, lie, green);
+
+            document.getElementById('sa-club').textContent = club;
+            document.getElementById('sa-carry-val').textContent = carry + 'y';
+            document.getElementById('sa-total-val').textContent = total + 'y';
+
+            let strategy = 'Execute with commitment.';
+            if (location === 'tee' && distance > 150) strategy = 'Maximize distance. Smooth tempo.';
+            else if (location === 'fairway' && distance > 100) strategy = 'Accuracy over distance. Land center green.';
+            else if (distance <= 50) strategy = distance > 20 ? 'Land soft, control distance.' : 'Land short, roll to hole.';
+
+            if (elev > 0) strategy += ' Uphill—club adjusted.';
+            if (wind === 'strong') strategy += ' Strong wind—club adjusted.';
+
+            document.getElementById('sa-strategy').textContent = strategy;
+            document.getElementById('sa-result').style.display = 'block';
+        }
+
+        // Set up Shot Analyzer event listeners
+        const saElements = ['sa-location', 'sa-distance', 'sa-lie', 'sa-elev', 'sa-wind', 'sa-winddir', 'sa-green'];
+        saElements.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('change', updateShotAnalyzer);
+                if (el.type === 'number') el.addEventListener('input', updateShotAnalyzer);
+            }
+        });
 
         document.getElementById('clubSetupBtn').addEventListener('click', function() {
             populateClubList();
