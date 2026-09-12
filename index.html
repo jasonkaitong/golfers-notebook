@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Golf Aide Notebook</title>
+    <title>Golfer's Notebook</title>
     <style>
         * {
             margin: 0;
@@ -73,13 +73,12 @@
             background: rgba(255,255,255,0.25);
             border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 9px;
+            font-size: 13px;
             transition: all 0.2s;
             font-weight: 500;
-            margin-top: 17px;
         }
 
         .header-btn:hover {
@@ -311,7 +310,7 @@
             gap: 6px;
             flex-wrap: wrap;
             justify-content: center;
-            margin-top: 13px;
+            margin-top: 8px;
         }
 
         .cover-page .quick-link-btn {
@@ -675,11 +674,10 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="header-title" id="pageTitle">The Golf Aide Notebook</div>
+            <div class="header-title" id="pageTitle">Golfer's Notebook</div>
             <div class="header-buttons">
                 <button class="header-btn" id="clubSetupBtn">⚙️ Setup</button>
                 <button class="header-btn" id="yardageBtn">📏 Yardage</button>
-                <button class="header-btn" id="shotAnalyzerBtn">🎯 Shot Analyzer</button>
             </div>
         </div>
 
@@ -698,7 +696,7 @@
         <div class="footer">
             <div class="page-counter" id="pageCounter">1 / 44</div>
             <div class="footer-author-info" id="footerAuthorInfo" style="display: none;">
-                Personalized for JT • v.4
+                Personalized for JT • v.2
             </div>
             <div class="nav-buttons">
                 <button class="nav-btn" id="prevBtn" onclick="goToPage(currentPage - 1)">← Back</button>
@@ -762,9 +760,17 @@
                 content: `
                     <div class="cover-page">
                         <div class="page-content cover-page">
+                            <h1>Golfer's Notebook</h1>
+                            <div class="subtitle">Shot Selection & Swing Tips</div>
+                            <div class="quick-links">
+                                <button class="quick-link-btn" onclick="goToPage(1)">Off Tee</button>
+                                <button class="quick-link-btn" onclick="goToPage(9)">Fairway</button>
+                                <button class="quick-link-btn" onclick="goToPage(23)">Around Green</button>
+                                <button class="quick-link-btn" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); border-color: rgba(255,255,255,0.4);" onclick="goToShotRec()">🎯 Shot Recommender</button>
+                            </div>
                             <div class="author-info">
                                 Personalized for JT<br>
-                                <span style="font-size: 14px; font-weight: 600; color: #2ecc71; letter-spacing: 0.5px;">v.3</span>
+                                <span style="font-size: 14px; font-weight: 600; color: #2ecc71; letter-spacing: 0.5px;">v.2</span>
                             </div>
                         </div>
                     </div>
@@ -2602,7 +2608,7 @@
                         <h4>8. Nine Window Concept</h4>
                         <p>Master 9 shot variations (3 trajectories × 3 directions) from each club. Systematic practice builds shot versatility and confidence.</p>
                         <h4>🐯 Applied Across Your Game</h4>
-                        <p>Whether hitting a fade off the tee, executing a stinger in the wind, chipping from tough lies, or escaping bunkers—these principles guide every shot in your Golf Aide Notebook.</p>
+                        <p>Whether hitting a fade off the tee, executing a stinger in the wind, chipping from tough lies, or escaping bunkers—these principles guide every shot in your Golfer's Notebook.</p>
                     </div>
                 `
             },
@@ -2707,123 +2713,15 @@
                 `
             },
             {
-                title: 'Punch Shot',
-                type: 'guide',
-                content: `
-                    <div class="page-content">
-                        <h3>🎯 Punch Shot</h3>
-                        <p style="font-size: 12px; margin: 12px 0; color: #555; line-height: 1.6;">A controlled shot with reduced flight that penetrates through wind and stays under obstacles.</p>
-                        <div style="background: #fff3cd; padding: 12px; border-radius: 4px; margin: 12px 0; font-size: 11px; color: #333;">
-                            <strong>When to use:</strong> Strong wind, low ceiling from trees, need accuracy over distance
-                        </div>
-                        <div style="margin: 12px 0; font-size: 11px;">
-                            <strong style="color: #27ae60;">Setup:</strong>
-                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
-                                • Move ball back in stance (1-2 balls)<br>
-                                • Hands ahead of the ball<br>
-                                • Feet closer together<br>
-                                • Shorter backswing
-                            </div>
-                        </div>
-                        <div style="margin: 12px 0; font-size: 11px;">
-                            <strong style="color: #27ae60;">Swing Thought:</strong>
-                            <div style="color: #555; margin-top: 6px;">
-                                "Smooth tempo, keep it low, punch through the wind."
-                            </div>
-                        </div>
-                        <div style="margin: 12px 0; font-size: 11px;">
-                            <strong style="color: #27ae60;">Key Points:</strong>
-                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
-                                • Less distance than full swing (about 70-80%)<br>
-                                • Flight stays 10-15 feet lower<br>
-                                • More predictable in wind
-                            </div>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                title: 'Chip Shot',
-                type: 'guide',
-                content: `
-                    <div class="page-content">
-                        <h3>🎯 Chip Shot</h3>
-                        <p style="font-size: 12px; margin: 12px 0; color: #555; line-height: 1.6;">A short, controlled shot close to the green where you want the ball to land softly and roll to the hole.</p>
-                        <div style="background: #fff3cd; padding: 12px; border-radius: 4px; margin: 12px 0; font-size: 11px; color: #333;">
-                            <strong>When to use:</strong> Within 30 yards of green, clean lie, want soft landing
-                        </div>
-                        <div style="margin: 12px 0; font-size: 11px;">
-                            <strong style="color: #27ae60;">Club Selection:</strong>
-                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
-                                • Short distance (20 yds): 9-iron or PW<br>
-                                • Medium distance (30 yds): 7-8 iron<br>
-                                • Roll needed: 6-7 iron
-                            </div>
-                        </div>
-                        <div style="margin: 12px 0; font-size: 11px;">
-                            <strong style="color: #27ae60;">Setup:</strong>
-                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
-                                • Narrow stance, feet 6 inches apart<br>
-                                • Ball in center or slightly back<br>
-                                • Hands ahead<br>
-                                • Weight favors front foot
-                            </div>
-                        </div>
-                        <div style="margin: 12px 0; font-size: 11px;">
-                            <strong style="color: #27ae60;">Swing Thought:</strong>
-                            <div style="color: #555; margin-top: 6px;">
-                                "Small pendulum stroke, let the club do the work."
-                            </div>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                title: 'Recovery Shot',
-                type: 'guide',
-                content: `
-                    <div class="page-content">
-                        <h3>🎯 Recovery Shot</h3>
-                        <p style="font-size: 12px; margin: 12px 0; color: #555; line-height: 1.6;">A creative shot to get out of difficult situations like rough, trees, or uneven lies while advancing toward the target.</p>
-                        <div style="background: #fff3cd; padding: 12px; border-radius: 4px; margin: 12px 0; font-size: 11px; color: #333;">
-                            <strong>When to use:</strong> Thick rough, uneven lie, need to escape trouble
-                        </div>
-                        <div style="margin: 12px 0; font-size: 11px;">
-                            <strong style="color: #27ae60;">From Thick Rough:</strong>
-                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
-                                • Use shorter club (increases contact)<br>
-                                • Ball position back in stance<br>
-                                • Expect 10-15% less distance<br>
-                                • Swing down firmly, follow through
-                            </div>
-                        </div>
-                        <div style="margin: 12px 0; font-size: 11px;">
-                            <strong style="color: #27ae60;">From Uneven Lie:</strong>
-                            <div style="color: #555; margin-top: 6px; line-height: 1.5;">
-                                • Align shoulders to the slope<br>
-                                • Play ball lower in stance<br>
-                                • Shorter swing arc<br>
-                                • Commit to the shot
-                            </div>
-                        </div>
-                        <div style="margin: 12px 0; font-size: 11px;">
-                            <strong style="color: #27ae60;">Key Thought:</strong>
-                            <div style="color: #555; margin-top: 6px;">
-                                "Accept the situation, focus on contact, advance the ball."
-                            </div>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                title: 'Shot Analyzer',
+                title: 'Shot Recommender',
                 type: 'tool',
                 content: `
-                    <div class="page-content" style="display: flex; flex-direction: column; gap: 12px;">
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                    <div class="page-content" id="shotRecContainer" style="max-height: 100%; overflow-y: auto; font-size: 12px;">
+                        <h3>🎯 Shot Recommender</h3>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 12px;">
                             <div>
                                 <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">LOCATION</label>
-                                <select id="sa-location" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                <select id="sr-location" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
                                     <option value="">Select location...</option>
                                     <option value="tee">Off the Tee</option>
                                     <option value="fairway">Fairway</option>
@@ -2835,26 +2733,24 @@
                             </div>
                             <div>
                                 <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">DISTANCE TO PIN (Y)</label>
-                                <input type="number" id="sa-distance" min="0" max="500" placeholder="e.g., 147" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                <input type="number" id="sr-distance" min="0" max="500" placeholder="e.g., 147" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
                             </div>
                             <div>
                                 <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">LIE</label>
-                                <select id="sa-lie" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                <select id="sr-lie" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
                                     <option value="">Select lie...</option>
                                     <option value="clean">Clean</option>
                                     <option value="thick">Thick/Heavy</option>
                                     <option value="tight">Tight/Hardpan</option>
-                                    <option value="uphill">Uphill</option>
-                                    <option value="downhill">Downhill</option>
                                 </select>
                             </div>
                             <div>
-                                <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">ELEVATION (FT)</label>
-                                <input type="number" id="sa-elev" min="-100" max="100" placeholder="e.g., +25" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">ELEVATION CHANGE (FT)</label>
+                                <input type="number" id="sr-elev" min="-100" max="100" placeholder="e.g., +25" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
                             </div>
                             <div>
                                 <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">WIND</label>
-                                <select id="sa-wind" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                <select id="sr-wind" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
                                     <option value="none">None</option>
                                     <option value="light">Light (5-10 mph)</option>
                                     <option value="moderate">Moderate (11-15 mph)</option>
@@ -2863,7 +2759,7 @@
                             </div>
                             <div>
                                 <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">WIND DIRECTION</label>
-                                <select id="sa-winddir" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                <select id="sr-winddir" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
                                     <option value="none">N/A</option>
                                     <option value="headwind">Headwind</option>
                                     <option value="tailwind">Tailwind</option>
@@ -2872,8 +2768,17 @@
                                 </select>
                             </div>
                             <div>
+                                <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">PIN LOCATION</label>
+                                <select id="sr-pin" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                    <option value="">Select...</option>
+                                    <option value="front">Front</option>
+                                    <option value="middle">Middle</option>
+                                    <option value="back">Back</option>
+                                </select>
+                            </div>
+                            <div>
                                 <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">GREEN SHAPE</label>
-                                <select id="sa-green" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
+                                <select id="sr-green" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
                                     <option value="">Select...</option>
                                     <option value="flat">Flat</option>
                                     <option value="uphill">Uphill</option>
@@ -2883,16 +2788,147 @@
                                 </select>
                             </div>
                         </div>
-                        <button id="sa-calculate-btn" onclick="updateShotAnalyzer()" style="width: 100%; padding: 10px; background: #27ae60; color: white; border: none; border-radius: 4px; font-weight: 600; font-size: 12px; cursor: pointer; margin-top: 6px;">Calculate Shot</button>
-                        <div id="sa-result" style="margin-top: 12px; padding: 12px; background: #f0f8f5; border-left: 3px solid #27ae60; border-radius: 4px; display: none;">
-                            <div id="sa-club" style="font-size: 14px; font-weight: 600; color: #27ae60; margin-bottom: 6px;"></div>
-                            <div id="sa-swings" style="font-size: 11px; color: #27ae60; margin-bottom: 8px; font-style: italic;"></div>
-                            <div id="sa-carry" style="font-size: 12px; color: #2c3e50; margin-bottom: 4px;"><strong>Carry:</strong> <span id="sa-carry-val">—</span></div>
-                            <div id="sa-total" style="font-size: 12px; color: #2c3e50; margin-bottom: 8px;"><strong>Total:</strong> <span id="sa-total-val">—</span></div>
-                            <div id="sa-strategy" style="font-size: 11px; color: #555; line-height: 1.5; margin-bottom: 8px;"></div>
-                            <div id="sa-links" style="font-size: 10px; color: #27ae60; border-top: 1px solid #d0e8e0; padding-top: 6px;"></div>
+                        <div style="display: flex; gap: 8px; margin-top: 16px;">
+                            <button id="calculateShotBtn" style="flex: 1; background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px;">Calculate Shot</button>
+                            <button id="resetShotBtn" style="flex: 1; background: #bdc3c7; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px;">Reset</button>
+                        </div>
+                        <div id="sr-result" style="margin-top: 16px; padding: 12px; background: #f0f8f5; border-left: 3px solid #27ae60; border-radius: 4px; min-height: 80px; display: none;">
+                            <div id="sr-club" style="font-size: 14px; font-weight: 600; color: #27ae60; margin-bottom: 6px;"></div>
+                            <div id="sr-carry" style="font-size: 12px; color: #2c3e50; margin-bottom: 4px;"><strong>Carry:</strong> <span id="sr-carry-val">—</span></div>
+                            <div id="sr-total" style="font-size: 12px; color: #2c3e50; margin-bottom: 6px;"><strong>Total:</strong> <span id="sr-total-val">—</span></div>
+                            <div id="sr-strategy" style="font-size: 11px; color: #555; line-height: 1.5;"></div>
                         </div>
                     </div>
+                    <script>
+                        const srElements = {
+                            location: document.getElementById('sr-location'),
+                            distance: document.getElementById('sr-distance'),
+                            lie: document.getElementById('sr-lie'),
+                            elev: document.getElementById('sr-elev'),
+                            wind: document.getElementById('sr-wind'),
+                            winddir: document.getElementById('sr-winddir'),
+                            pin: document.getElementById('sr-pin'),
+                            green: document.getElementById('sr-green'),
+                            result: document.getElementById('sr-result'),
+                            club: document.getElementById('sr-club'),
+                            carry: document.getElementById('sr-carry-val'),
+                            total: document.getElementById('sr-total-val'),
+                            strategy: document.getElementById('sr-strategy')
+                        };
+
+                        function getClubForDistance(distance, location) {
+                            if (location === 'tee') {
+                                if (distance >= 220) return 'Driver';
+                                if (distance >= 190) return 'Hybrid';
+                                if (distance >= 150) return '3-Wood';
+                            } else if (location === 'fairway') {
+                                if (distance >= 180) return '5-Iron';
+                                if (distance >= 140) return '7-Iron';
+                                if (distance >= 100) return '9-Iron';
+                                if (distance >= 70) return 'PW';
+                            } else if (location === 'rough') {
+                                if (distance >= 140) return '6-Iron';
+                                if (distance >= 90) return '8-Iron';
+                                if (distance >= 60) return 'PW';
+                            }
+                            return 'PW';
+                        }
+
+                        function getCarryDistance(club, distance) {
+                            const carryPercent = {
+                                'Driver': 0.95, 'Hybrid': 0.92, '3-Wood': 0.90,
+                                '5-Iron': 0.85, '6-Iron': 0.84, '7-Iron': 0.82, '8-Iron': 0.80, '9-Iron': 0.78,
+                                'PW': 0.75
+                            };
+                            const percent = carryPercent[club] || 0.75;
+                            return Math.round(distance * percent);
+                        }
+
+                        function getTotalDistance(carry, lie, greenTopo) {
+                            let rollPercent = 0.15;
+                            if (lie === 'thick') rollPercent = 0.05;
+                            else if (lie === 'tight') rollPercent = 0.20;
+                            else if (lie === 'clean') rollPercent = 0.18;
+                            if (greenTopo === 'running-away') rollPercent += 0.08;
+                            else if (greenTopo === 'uphill') rollPercent -= 0.05;
+                            else if (greenTopo === 'dwell') rollPercent -= 0.08;
+                            rollPercent = Math.max(0.02, rollPercent);
+                            const roll = Math.round(carry * rollPercent);
+                            return carry + roll;
+                        }
+
+                        function updateShotRec() {
+                            const location = srElements.location.value;
+                            const distance = parseInt(srElements.distance.value) || 0;
+                            const lie = srElements.lie.value;
+                            const elev = parseInt(srElements.elev.value) || 0;
+                            const wind = srElements.wind.value;
+                            const winddir = srElements.winddir.value;
+                            const pin = srElements.pin.value;
+                            const green = srElements.green.value;
+
+                            if (!location || distance <= 0) {
+                                srElements.result.style.display = 'none';
+                                return;
+                            }
+
+                            let club = getClubForDistance(distance, location);
+                            let adjustedDistance = distance;
+
+                            if (elev > 0) adjustedDistance -= Math.abs(elev) * 2;
+                            else if (elev < 0) adjustedDistance += Math.abs(elev) * 1.5;
+
+                            if (wind === 'strong') {
+                                if (winddir === 'headwind') adjustedDistance += 20;
+                                else if (winddir === 'tailwind') adjustedDistance -= 15;
+                            } else if (wind === 'moderate') {
+                                if (winddir === 'headwind') adjustedDistance += 10;
+                                else if (winddir === 'tailwind') adjustedDistance -= 8;
+                            }
+
+                            const carry = getCarryDistance(club, adjustedDistance);
+                            const total = getTotalDistance(carry, lie, green);
+
+                            // Calculate Soft swing option (one club longer)
+                            const clubs = ['PW', '9-Iron', '8-Iron', '7-Iron', '6-Iron', '5-Iron', '3-Wood', 'Hybrid', 'Driver'];
+                            const clubIndex = clubs.indexOf(club);
+                            const softClub = clubIndex > 0 ? clubs[clubIndex - 1] : club;
+                            const softCarry = getCarryDistance(softClub, adjustedDistance);
+                            const softTotal = getTotalDistance(softCarry, lie, green);
+
+                            srElements.club.textContent = `${softClub} / ${club}`;
+                            srElements.carry.textContent = `${softCarry}y / ${carry}y`;
+                            srElements.total.textContent = `${softTotal}y / ${total}y`;
+
+                            let strategy = 'Execute with commitment.';
+                            if (location === 'tee' && distance > 150) strategy = 'Maximize distance. Smooth tempo.';
+                            else if (location === 'fairway' && distance > 100) strategy = 'Accuracy over distance. Land center green.';
+                            else if (distance <= 50) strategy = distance > 20 ? 'Land soft, control distance.' : 'Land short, roll to hole.';
+
+                            if (elev > 0) strategy += ' Uphill—club adjusted.';
+                            if (wind === 'strong') strategy += ' Strong wind—club adjusted.';
+
+                            srElements.strategy.textContent = strategy;
+                            srElements.result.style.display = 'block';
+                        }
+
+                        function resetShotRec() {
+                            srElements.location.value = '';
+                            srElements.distance.value = '';
+                            srElements.lie.value = '';
+                            srElements.elev.value = '';
+                            srElements.wind.value = 'none';
+                            srElements.winddir.value = 'none';
+                            srElements.pin.value = '';
+                            srElements.green.value = '';
+                            srElements.result.style.display = 'none';
+                        }
+
+                        const calculateBtn = document.getElementById('calculateShotBtn');
+                        const resetBtn = document.getElementById('resetShotBtn');
+                        if (calculateBtn) calculateBtn.addEventListener('click', updateShotRec);
+                        if (resetBtn) resetBtn.addEventListener('click', resetShotRec);
+                    <\/script>
                 `
             }
         ];
@@ -2909,15 +2945,6 @@
             populateClubList();
             populateYardageTable();
             addSwipeListener();
-
-            // Set up Shot Analyzer button listener after pages are rendered
-            const calculateBtn = document.getElementById('sa-calculate-btn');
-            if (calculateBtn) {
-                calculateBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    updateShotAnalyzer();
-                });
-            }
         }
 
         function renderPages() {
@@ -2938,7 +2965,14 @@
             updateCategoryBar();
         }
 
-function updatePages() {
+        function goToShotRec() {
+            const shotRecIndex = PAGES_DATA.findIndex(page => page.title === 'Shot Recommender');
+            if (shotRecIndex !== -1) {
+                goToPage(shotRecIndex);
+            }
+        }
+
+        function updatePages() {
             const pages = document.querySelectorAll('.page');
             pages.forEach((page, index) => {
                 page.classList.remove('active', 'prev');
@@ -3088,144 +3122,6 @@ function updatePages() {
             }
         }
 
-        // Shot Analyzer Functions
-        function getSASwingOptions(club, distance) {
-            const swingOptions = {
-                'Driver': ['Soft drive', 'Full driver', 'Punch drive'],
-                'Hybrid': ['Soft hybrid', 'Full hybrid', '3/4 swing'],
-                '3-Wood': ['Soft 3W', 'Full 3W', '3/4 swing'],
-                '5-Iron': ['Soft 6', 'Full 5', '3/4 5'],
-                '6-Iron': ['Soft 7', 'Full 6', '3/4 6'],
-                '7-Iron': ['Soft 8', 'Full 7', '3/4 7'],
-                '8-Iron': ['Soft 9', 'Full 8', '3/4 8'],
-                '9-Iron': ['Soft PW', 'Full 9', '3/4 9'],
-                'PW': ['Soft PW', 'Full PW', '3/4 PW']
-            };
-            return swingOptions[club] || ['Soft', 'Full', '3/4'];
-        }
-
-        function getSAShotType(location, distance, wind, lie) {
-            if (location === 'tee' && distance > 200) return 'drive';
-            if (distance <= 50 && lie === 'clean') return 'chip';
-            if (distance <= 100 && lie === 'clean') return 'approach';
-            if (location === 'rough' || lie === 'thick') return 'recovery';
-            if (wind === 'strong') return 'punch';
-            return 'standard';
-        }
-
-        // Shot Analyzer Functions
-        function getSAClubForDistance(distance, location) {
-            if (location === 'tee') {
-                if (distance >= 220) return 'Driver';
-                if (distance >= 190) return 'Hybrid';
-                if (distance >= 150) return '3-Wood';
-            } else if (location === 'fairway') {
-                if (distance >= 180) return '5-Iron';
-                if (distance >= 140) return '7-Iron';
-                if (distance >= 100) return '9-Iron';
-                if (distance >= 70) return 'PW';
-            } else if (location === 'rough') {
-                if (distance >= 140) return '6-Iron';
-                if (distance >= 90) return '8-Iron';
-                if (distance >= 60) return 'PW';
-            }
-            return 'PW';
-        }
-
-        function getSACarryDistance(club, distance) {
-            const carryPercent = {
-                'Driver': 0.95, 'Hybrid': 0.92, '3-Wood': 0.90,
-                '5-Iron': 0.85, '6-Iron': 0.84, '7-Iron': 0.82, '8-Iron': 0.80, '9-Iron': 0.78,
-                'PW': 0.75
-            };
-            const percent = carryPercent[club] || 0.75;
-            return Math.round(distance * percent);
-        }
-
-        function getSATotalDistance(carry, lie, greenTopo) {
-            let rollPercent = 0.15;
-            if (lie === 'thick') rollPercent = 0.05;
-            else if (lie === 'tight') rollPercent = 0.20;
-            else if (lie === 'clean') rollPercent = 0.18;
-            if (greenTopo === 'running-away') rollPercent += 0.08;
-            else if (greenTopo === 'uphill') rollPercent -= 0.05;
-            rollPercent = Math.max(0.02, rollPercent);
-            const roll = Math.round(carry * rollPercent);
-            return carry + roll;
-        }
-
-        function updateShotAnalyzer() {
-            const location = document.getElementById('sa-location').value;
-            const distance = parseInt(document.getElementById('sa-distance').value) || 0;
-            const lie = document.getElementById('sa-lie').value;
-            const elev = parseInt(document.getElementById('sa-elev').value) || 0;
-            const wind = document.getElementById('sa-wind').value;
-            const winddir = document.getElementById('sa-winddir').value;
-            const green = document.getElementById('sa-green').value;
-
-            if (!location || distance <= 0) {
-                document.getElementById('sa-result').style.display = 'none';
-                return;
-            }
-
-            let club = getSAClubForDistance(distance, location);
-            let adjustedDistance = distance;
-
-            // Positive elevation = uphill (reduces carry), negative = downhill (increases carry)
-            if (elev > 0) adjustedDistance -= Math.abs(elev) * 2;
-            else if (elev < 0) adjustedDistance += Math.abs(elev) * 1.5;
-
-            if (wind === 'strong') {
-                if (winddir === 'headwind') adjustedDistance += 20;
-                else if (winddir === 'tailwind') adjustedDistance -= 15;
-            } else if (wind === 'moderate') {
-                if (winddir === 'headwind') adjustedDistance += 10;
-                else if (winddir === 'tailwind') adjustedDistance -= 8;
-            }
-
-            const carry = getSACarryDistance(club, adjustedDistance);
-            const total = getSATotalDistance(carry, lie, green);
-
-            document.getElementById('sa-club').textContent = club;
-
-            // Add swing options
-            const swings = getSASwingOptions(club, adjustedDistance);
-            document.getElementById('sa-swings').textContent = 'Swings: ' + swings.join(' / ');
-
-            document.getElementById('sa-carry-val').textContent = carry + 'y';
-            document.getElementById('sa-total-val').textContent = total + 'y';
-
-            let strategy = 'Execute with commitment.';
-            if (location === 'tee' && distance > 150) strategy = 'Maximize distance. Smooth tempo.';
-            else if (location === 'fairway' && distance > 100) strategy = 'Accuracy over distance. Land center green.';
-            else if (distance <= 50) strategy = distance > 20 ? 'Land soft, control distance.' : 'Land short, roll to hole.';
-
-            if (elev > 0) strategy += ' Uphill—club adjusted.';
-            if (wind === 'strong') strategy += ' Strong wind—club adjusted.';
-
-            document.getElementById('sa-strategy').textContent = strategy;
-
-            // Add shot type guidance links
-            const shotType = getSAShotType(location, distance, wind, lie);
-            let links = '';
-            const punchIdx = PAGES_DATA.findIndex(p => p.title === 'Punch Shot');
-            const chipIdx = PAGES_DATA.findIndex(p => p.title === 'Chip Shot');
-            const recoveryIdx = PAGES_DATA.findIndex(p => p.title === 'Recovery Shot');
-
-            if (shotType === 'punch' && punchIdx !== -1) {
-                links = `📖 <a href="#" onclick="goToPage(${punchIdx}); return false;">Punch Shot Guide</a>`;
-            } else if (shotType === 'chip' && chipIdx !== -1) {
-                links = `📖 <a href="#" onclick="goToPage(${chipIdx}); return false;">Chip Shot Guide</a>`;
-            } else if (shotType === 'recovery' && recoveryIdx !== -1) {
-                links = `📖 <a href="#" onclick="goToPage(${recoveryIdx}); return false;">Recovery Shot Guide</a>`;
-            }
-
-            if (links) document.getElementById('sa-links').innerHTML = links;
-            else document.getElementById('sa-links').innerHTML = '';
-
-            document.getElementById('sa-result').style.display = 'block';
-        }
-
         document.getElementById('clubSetupBtn').addEventListener('click', function() {
             populateClubList();
             openModal('clubSetupModal');
@@ -3233,13 +3129,6 @@ function updatePages() {
 
         document.getElementById('yardageBtn').addEventListener('click', function() {
             openModal('yardageModal');
-        });
-
-        document.getElementById('shotAnalyzerBtn').addEventListener('click', function() {
-            const idx = PAGES_DATA.findIndex(p => p.title === 'Shot Analyzer');
-            if (idx !== -1) {
-                goToPage(idx);
-            }
         });
 
         window.addEventListener('click', function(event) {
