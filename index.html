@@ -150,10 +150,9 @@
         }
 
         .page.active {
-            display: flex;
+            display: block;
             opacity: 1;
             z-index: 1;
-            flex-direction: column;
         }
 
         .page.prev {
@@ -165,13 +164,13 @@
             max-width: 100%;
             margin: 0;
             background: white;
-            padding: 30px 20px;
+            padding: 30px 20px 30px 30px;
             border-radius: 0;
             box-shadow: none;
             position: relative;
             font-family: 'Georgia', serif;
             line-height: 1.6;
-            flex: 1;
+            min-height: 100%;
         }
 
         .page-content::before {
@@ -180,8 +179,14 @@
             left: 0;
             top: 0;
             bottom: 0;
-            width: 4px;
-            background: linear-gradient(to bottom, #2ecc71, #27ae60);
+            width: 8px;
+            background: repeating-linear-gradient(
+                to bottom,
+                #27ae60 0px,
+                #27ae60 3px,
+                transparent 3px,
+                transparent 10px
+            );
         }
 
         .cover-page {
