@@ -678,7 +678,7 @@
             <div class="header-buttons">
                 <button class="header-btn" id="clubSetupBtn">⚙️ Setup</button>
                 <button class="header-btn" id="yardageBtn">📏 Yardage</button>
-                <button class="header-btn" onclick="goToPage(47)">🎯 Shot Analyzer</button>
+                <button class="header-btn" onclick="const idx = PAGES_DATA.findIndex(p => p.title === 'Shot Analyzer'); if(idx !== -1) goToPage(idx);">🎯 Shot Analyzer</button>
             </div>
         </div>
 
