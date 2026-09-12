@@ -164,26 +164,62 @@
             max-width: 100%;
             margin: 0;
             background: white;
-            padding: 30px 20px 30px 30px;
+            padding: 40px 20px 30px 30px;
             border-radius: 0;
             box-shadow: none;
             position: relative;
             font-family: 'Georgia', serif;
             line-height: 1.6;
             min-height: 100%;
-            background-image:
-                repeating-linear-gradient(
-                    to bottom,
-                    transparent,
-                    transparent 23px,
-                    #e8e8e8 23px,
-                    #e8e8e8 24px
-                );
-            background-position: 0 30px;
         }
 
-        .cover-page .page-content {
-            background-image: url('golf-cover.png') !important;
+        .page-content::top {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            right: 20px;
+            height: 20px;
+            background: repeating-linear-gradient(
+                to right,
+                transparent 0px,
+                transparent 8px,
+                #999 8px,
+                #999 10px,
+                #bbb 10px,
+                #bbb 11px,
+                transparent 11px,
+                transparent 20px
+            );
+            background-size: 20px 100%;
+        }
+
+        .page-content::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 30px;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(
+                to bottom,
+                transparent,
+                transparent 23px,
+                #e8e8e8 23px,
+                #e8e8e8 24px
+            );
+            background-position: 0 30px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .page-content > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-page .page-content::after {
+            display: none;
         }
 
         .page-content::before {
