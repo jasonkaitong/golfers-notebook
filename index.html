@@ -171,27 +171,29 @@
             font-family: 'Georgia', serif;
             line-height: 1.6;
             min-height: 100%;
+            border-top: 2px solid #ddd;
         }
 
-        .page-content::top {
+        .page::before {
             content: '';
             position: absolute;
-            top: 10px;
+            top: 30px;
             left: 30px;
             right: 20px;
-            height: 20px;
+            height: 8px;
             background: repeating-linear-gradient(
                 to right,
-                transparent 0px,
-                transparent 8px,
-                #999 8px,
-                #999 10px,
-                #bbb 10px,
-                #bbb 11px,
-                transparent 11px,
-                transparent 20px
+                #999 0px,
+                #999 6px,
+                #ccc 6px,
+                #ccc 8px,
+                #888 8px,
+                #888 10px,
+                transparent 10px,
+                transparent 18px
             );
-            background-size: 20px 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 10;
         }
 
         .page-content::after {
