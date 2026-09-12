@@ -2892,7 +2892,7 @@
                             // Calculate Soft swing option (one club longer)
                             const clubs = ['PW', '9-Iron', '8-Iron', '7-Iron', '6-Iron', '5-Iron', '3-Wood', 'Hybrid', 'Driver'];
                             const clubIndex = clubs.indexOf(club);
-                            const softClub = clubIndex > 0 ? clubs[clubIndex - 1] : club;
+                            const softClub = clubIndex < clubs.length - 1 ? clubs[clubIndex + 1] : club;
                             const softCarry = getCarryDistance(softClub, adjustedDistance);
                             const softTotal = getTotalDistance(softCarry, lie, green);
 
