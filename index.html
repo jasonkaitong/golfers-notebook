@@ -163,8 +163,8 @@
             width: 100%;
             max-width: 100%;
             margin: 0;
-            background: transparent;
-            padding: 0;
+            background: white;
+            padding: 30px 20px 30px 25px;
             border-radius: 0;
             box-shadow: none;
             position: relative;
@@ -174,6 +174,7 @@
         }
 
         .cover-page .page-content {
+            background: none;
             padding: 40px 20px;
         }
 
@@ -185,14 +186,36 @@
             left: 0;
             top: 0;
             bottom: 0;
-            width: 8px;
-            background: repeating-linear-gradient(
+            width: 4px;
+            background: #27ae60;
+        }
+
+        .page-content::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 25px;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(
                 to bottom,
-                #27ae60 0px,
-                #27ae60 3px,
-                transparent 3px,
-                transparent 10px
+                transparent 0px,
+                transparent 23px,
+                #e8e8e8 23px,
+                #e8e8e8 24px
             );
+            background-position: 0 30px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .page-content > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-page .page-content::after {
+            display: none;
         }
 
         .cover-page {
