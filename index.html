@@ -2802,7 +2802,10 @@
             // Set up Shot Analyzer button listener after pages are rendered
             const calculateBtn = document.getElementById('sa-calculate-btn');
             if (calculateBtn) {
-                calculateBtn.addEventListener('click', updateShotAnalyzer);
+                calculateBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    updateShotAnalyzer();
+                });
             }
         }
 
