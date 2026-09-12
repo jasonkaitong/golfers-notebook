@@ -758,7 +758,7 @@
                                 <button class="quick-link-btn" onclick="goToPage(1)">Off Tee</button>
                                 <button class="quick-link-btn" onclick="goToPage(9)">Fairway</button>
                                 <button class="quick-link-btn" onclick="goToPage(23)">Around Green</button>
-                                <button class="quick-link-btn" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); border-color: rgba(255,255,255,0.4);" onclick="window.location.href='shot-recommender.html'">🎯 Shot Recommender</button>
+                                <button class="quick-link-btn" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); border-color: rgba(255,255,255,0.4);" onclick="goToShotRec()">🎯 Shot Recommender</button>
                             </div>
                             <div class="author-info">
                                 Personalized for JT<br>
@@ -2932,6 +2932,13 @@
             updatePages();
             updatePageTitle();
             updateCategoryBar();
+        }
+
+        function goToShotRec() {
+            const shotRecIndex = PAGES_DATA.findIndex(page => page.title === 'Shot Recommender');
+            if (shotRecIndex !== -1) {
+                goToPage(shotRecIndex);
+            }
         }
 
         function updatePages() {
