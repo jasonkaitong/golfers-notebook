@@ -678,7 +678,7 @@
             <div class="header-buttons">
                 <button class="header-btn" id="clubSetupBtn">⚙️ Setup</button>
                 <button class="header-btn" id="yardageBtn">📏 Yardage</button>
-                <button class="header-btn" onclick="const idx = PAGES_DATA.findIndex(p => p.title === 'Shot Analyzer'); if(idx !== -1) goToPage(idx);">🎯 Shot Analyzer</button>
+                <button class="header-btn" id="shotAnalyzerBtn">🎯 Shot Analyzer</button>
             </div>
         </div>
 
@@ -2709,9 +2709,8 @@
                 title: 'Shot Analyzer',
                 type: 'tool',
                 content: `
-                    <div class="page-content">
-                        <h3>🎯 Shot Analyzer</h3>
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px;">
+                    <div class="page-content" style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
                             <div>
                                 <label style="display: block; font-weight: 600; font-size: 11px; color: #27ae60; margin-bottom: 6px;">LOCATION</label>
                                 <select id="sa-location" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px;">
@@ -2719,6 +2718,9 @@
                                     <option value="tee">Off the Tee</option>
                                     <option value="fairway">Fairway</option>
                                     <option value="rough">Rough</option>
+                                    <option value="trees">Under Trees</option>
+                                    <option value="fairway-bunker">Fairway Bunker</option>
+                                    <option value="green">Around the Green</option>
                                 </select>
                             </div>
                             <div>
@@ -2732,6 +2734,8 @@
                                     <option value="clean">Clean</option>
                                     <option value="thick">Thick/Heavy</option>
                                     <option value="tight">Tight/Hardpan</option>
+                                    <option value="uphill">Uphill</option>
+                                    <option value="downhill">Downhill</option>
                                 </select>
                             </div>
                             <div>
@@ -2753,6 +2757,8 @@
                                     <option value="none">N/A</option>
                                     <option value="headwind">Headwind</option>
                                     <option value="tailwind">Tailwind</option>
+                                    <option value="left-to-right">Left to Right</option>
+                                    <option value="right-to-left">Right to Left</option>
                                 </select>
                             </div>
                             <div>
@@ -2762,10 +2768,13 @@
                                     <option value="flat">Flat</option>
                                     <option value="uphill">Uphill</option>
                                     <option value="running-away">Running Away</option>
+                                    <option value="mound">On a Mound</option>
+                                    <option value="dwell">In Depression</option>
                                 </select>
                             </div>
                         </div>
-                        <div id="sa-result" style="margin-top: 16px; padding: 12px; background: #f0f8f5; border-left: 3px solid #27ae60; border-radius: 4px; min-height: 80px; display: none;">
+                        <button id="sa-calculate-btn" style="width: 100%; padding: 10px; background: #27ae60; color: white; border: none; border-radius: 4px; font-weight: 600; font-size: 12px; cursor: pointer; margin-top: 6px;">Calculate Shot</button>
+                        <div id="sa-result" style="margin-top: 12px; padding: 12px; background: #f0f8f5; border-left: 3px solid #27ae60; border-radius: 4px; min-height: 80px; display: none;">
                             <div id="sa-club" style="font-size: 14px; font-weight: 600; color: #27ae60; margin-bottom: 6px;"></div>
                             <div id="sa-carry" style="font-size: 12px; color: #2c3e50; margin-bottom: 4px;"><strong>Carry:</strong> <span id="sa-carry-val">—</span></div>
                             <div id="sa-total" style="font-size: 12px; color: #2c3e50; margin-bottom: 6px;"><strong>Total:</strong> <span id="sa-total-val">—</span></div>
@@ -3046,15 +3055,11 @@ function updatePages() {
             document.getElementById('sa-result').style.display = 'block';
         }
 
-        // Set up Shot Analyzer event listeners
-        const saElements = ['sa-location', 'sa-distance', 'sa-lie', 'sa-elev', 'sa-wind', 'sa-winddir', 'sa-green'];
-        saElements.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.addEventListener('change', updateShotAnalyzer);
-                if (el.type === 'number') el.addEventListener('input', updateShotAnalyzer);
-            }
-        });
+        // Set up Shot Analyzer button listener
+        const calculateBtn = document.getElementById('sa-calculate-btn');
+        if (calculateBtn) {
+            calculateBtn.addEventListener('click', updateShotAnalyzer);
+        }
 
         document.getElementById('clubSetupBtn').addEventListener('click', function() {
             populateClubList();
@@ -3063,6 +3068,13 @@ function updatePages() {
 
         document.getElementById('yardageBtn').addEventListener('click', function() {
             openModal('yardageModal');
+        });
+
+        document.getElementById('shotAnalyzerBtn').addEventListener('click', function() {
+            const idx = PAGES_DATA.findIndex(p => p.title === 'Shot Analyzer');
+            if (idx !== -1) {
+                goToPage(idx);
+            }
         });
 
         window.addEventListener('click', function(event) {
