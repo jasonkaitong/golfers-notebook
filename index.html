@@ -194,7 +194,7 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 25px;
+            left: 0;
             right: 0;
             bottom: 0;
             background-image: repeating-linear-gradient(
@@ -212,6 +212,10 @@
         .page-content > * {
             position: relative;
             z-index: 1;
+        }
+
+        .cover-page .page-content::before {
+            display: none;
         }
 
         .cover-page .page-content::after {
