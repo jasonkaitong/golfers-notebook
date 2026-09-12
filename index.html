@@ -145,12 +145,15 @@
             transition: opacity 0.3s ease-in-out;
             top: 0;
             left: 0;
+            right: 0;
+            bottom: 0;
         }
 
         .page.active {
-            display: block;
+            display: flex;
             opacity: 1;
             z-index: 1;
+            flex-direction: column;
         }
 
         .page.prev {
@@ -168,6 +171,7 @@
             position: relative;
             font-family: 'Georgia', serif;
             line-height: 1.6;
+            flex: 1;
         }
 
         .page-content::before {
@@ -189,6 +193,8 @@
             background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
             color: white;
             font-family: 'Georgia', serif;
+            height: 100%;
+            width: 100%;
         }
 
         .cover-page .page-content {
