@@ -180,7 +180,51 @@
             padding: 40px 20px;
         }
 
+        .tips-toggle {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 16px 0;
+            width: 100%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
+        .tips-toggle:hover {
+            background: linear-gradient(135deg, #229954 0%, #1e8449 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .tips-toggle:active {
+            transform: translateY(0);
+        }
+
+        .tips-content {
+            display: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #f0f8f5;
+            border-left: 3px solid #27ae60;
+            padding: 0 16px;
+            margin: 12px 0;
+        }
+
+        .tips-content.expanded {
+            display: block;
+            max-height: 2000px;
+            padding: 16px;
+            border-radius: 4px;
+        }
 
         .page-content::before {
             display: none;
@@ -1531,56 +1575,54 @@
                 type: 'shot',
                 content: `
                     <div class="page-content">
-                        <h3>🐯 Tight Lie Chip (Draw Chip) + PM Fundamentals</h3>
-                        <h4>Recommended Clubs</h4>
-                        <p>8-Iron, 9-Iron, PW, Sand Wedge (56°)</p>
-                        <h4>Strategy</h4>
-                        <p>🐯 Tiger's draw chip from tight lies. PM emphasizes weight forward + hands ahead foundation for all chipping.</p>
-                        <h4>When to Play</h4>
-                        <ul>
-                            <li>Tight grass around green (especially difficult lies)</li>
-                            <li>Need to stop quickly or shape ball left</li>
-                            <li>Want to avoid chunking (common problem in tight lies)</li>
-                        </ul>
-                        <h4>PM Phil's "Big 3 Chipping Fundamentals" (Foundation for All Chips)</h4>
-                        <p>PM: These three essentials apply to EVERY chip shot—no exceptions.</p>
-                        <ul>
-                            <li><strong>Fundamental 1 - Weight on Front Foot:</strong> 55/45 to 60/40 on soft ground. 100% forward on firm. Keeps leading edge down, prevents fat shots</li>
-                            <li><strong>Fundamental 2 - Hands Ahead of Clubhead:</strong> Maintain straight line from lead arm through shaft. This prevents the club from flipping and the leading edge from rising</li>
-                            <li><strong>Fundamental 3 - Commit to Ball Position:</strong> Never play ball in middle of stance. Decide high or low shot FIRST, then position ball accordingly</li>
-                        </ul>
-                        <h4>🐯 Tiger's Draw Chip Setup (Built on PM's Fundamentals)</h4>
-                        <ul>
-                            <li><strong>Weight:</strong> 65% (or more) on front foot (PM fundamental)</li>
-                            <li><strong>Hands:</strong> Forward, ahead of clubhead (PM fundamental)</li>
-                            <li><strong>Club face:</strong> Open slightly at address</li>
+                        <h3>🐯 Tight Lie Chip (Draw Variation)</h3>
+                        <p><strong>Clubs:</strong> 8-Iron, 9-Iron, PW, 56° Sand Wedge</p>
+                        <p><strong>Use:</strong> Tight grass around green. Need to stop quick or avoid chunking.</p>
+
+                        <h4>The Core Technique</h4>
+                        <p>🐯 <strong>Tiger:</strong> Close clubface through impact while driving body forward. Gets spin + avoids fat shots.</p>
+                        <p>PM <strong>Phil:</strong> Weight FORWARD (65%+) + hands ahead + commit to ball position (high or low).</p>
+
+                        <h4>Setup</h4>
+                        <ul style="margin-top: 8px;">
+                            <li><strong>Weight:</strong> 65%+ on front foot</li>
+                            <li><strong>Hands:</strong> Ahead of clubhead</li>
                             <li><strong>Stance:</strong> Slightly open</li>
+                            <li><strong>Ball:</strong> Forward (high) or back (low) — never middle</li>
                             <li><strong>Grip:</strong> Choked down 3-4 inches</li>
-                            <li><strong>Ball position:</strong> Committed—either forward (high) or back (low), never middle</li>
                         </ul>
-                        <h4>🐯 Tiger's Key Technique: Avoid The Chunk</h4>
-                        <ul>
-                            <li><strong>The Motion:</strong> Close the clubface through impact while driving your body forward</li>
-                            <li><strong>Why it works:</strong> "I'll get more spin. But I'm also ensuring that I don't fat it." The leading edge won't stub into ground if face is closing + weight stays forward</li>
-                            <li><strong>Body action:</strong> Forward momentum prevents deceleration (primary cause of chunks)</li>
-                        </ul>
+
                         <h4>Swing Mechanics</h4>
-                        <ul>
-                            <li><strong>Backswing:</strong> Pendulum motion from shoulders, minimal wrist</li>
-                            <li><strong>Downswing:</strong> Close face while body drives forward (weight stays forward)</li>
-                            <li><strong>Impact:</strong> Club face closes through impact, hands ahead, body continues forward</li>
-                            <li><strong>Follow-through:</strong> Balanced, accelerating through ball</li>
+                        <ul style="margin-top: 8px;">
+                            <li><strong>Backswing:</strong> Pendulum from shoulders, minimal wrist</li>
+                            <li><strong>Downswing:</strong> Close face while body drives forward</li>
+                            <li><strong>Impact:</strong> Weight stays forward, hands ahead, accelerate</li>
+                            <li><strong>Finish:</strong> Balanced, moving through ball</li>
                         </ul>
-                        <h4>Benefits</h4>
-                        <p>More spin than standard chip + protection against chunking + PM's forward weight foundation = highly versatile from tough lies.</p>
-                        <h4>Common Mistakes</h4>
-                        <ul>
-                            <li>Keeping face open (negates draw chip benefit)</li>
-                            <li>Weight neutral or back (PM: fat shots guaranteed)</li>
-                            <li>Hands behind ball (PM: club flips, rising leading edge)</li>
-                            <li>Ball in middle of stance (PM: no commitment, inconsistent results)</li>
-                            <li>Decelerating body (invites fat shots)</li>
-                        </ul>
+
+                        <button class="tips-toggle" onclick="toggleTips(this)">💡 Show Tips</button>
+                        <div class="tips-content">
+                            <h4>PM Phil's "Big 3 Chipping Fundamentals"</h4>
+                            <ul style="font-size: 13px;">
+                                <li><strong>1. Weight Forward:</strong> 55/45 soft, 100% firm. Keeps leading edge down.</li>
+                                <li><strong>2. Hands Ahead:</strong> Straight line from arm through shaft. Prevents flip + rising edge.</li>
+                                <li><strong>3. Commit to Position:</strong> High (forward) or low (back) — decide FIRST.</li>
+                            </ul>
+                            <h4>🐯 Tiger's Anti-Chunk Method</h4>
+                            <ul style="font-size: 13px;">
+                                <li>Close clubface through impact</li>
+                                <li>Drive body forward (forward momentum stops deceleration)</li>
+                                <li>Result: Spin + clean contact</li>
+                            </ul>
+                            <h4>Common Mistakes</h4>
+                            <ul style="font-size: 13px;">
+                                <li>Weight neutral or back → fat shots</li>
+                                <li>Hands behind ball → club flips</li>
+                                <li>Ball in middle → no commitment</li>
+                                <li>Face open → no draw benefit</li>
+                                <li>Decelerating body → chunks</li>
+                            </ul>
+                        </div>
                     </div>
                 `
             },
@@ -1710,51 +1752,54 @@
                 type: 'shot',
                 content: `
                     <div class="page-content">
-                        <h3>🐯 Standard Pitch (30-60 Yards) + PM Phil's Approach</h3>
-                        <h4>Recommended Clubs</h4>
-                        <p>PW, Sand Wedge (56°), Gap Wedge (52°)</p>
-                        <h4>Strategy</h4>
-                        <p>🐯 Tiger's refined pitch technique uses repeatable mechanics. PM Phil emphasizes decision-making: commit to high or low before you swing.</p>
-                        <h4>When to Play</h4>
-                        <ul>
-                            <li>30-60 yards from green</li>
-                            <li>Open landing area</li>
-                            <li>Need consistent distance control</li>
-                        </ul>
-                        <h4>🐯 Tiger's 5-Step Pitch System</h4>
-                        <ul>
-                            <li><strong>Step 1 - Upper Body Engine:</strong> Keep arms tight to your body. Upper body rotation motors the club back and through (not arms swinging independently)</li>
-                            <li><strong>Step 2 - Varied Hinge/Release:</strong> Alter your hinge and release patterns to produce different trajectories and distances while maintaining the same swing shape (biceps stay close)</li>
-                            <li><strong>Step 3 - Straight Position:</strong> Position club centered at address with shaft relatively straight. Allows wedge's rounded bottom to glide across turf. Grip points near belly button at release (not aggressively forward)</li>
-                            <li><strong>Step 4 - Club Low, Ball High:</strong> Keep clubhead low through hitting zone to achieve height effortlessly. Think "slide," not "smash"</li>
-                            <li><strong>Step 5 - Great Spacing:</strong> Bend forward from hip joints so arms and hands hang naturally beneath shoulders. Creates space for unobstructed motion through impact</li>
-                        </ul>
-                        <h4>PM Phil's Pitch Philosophy: The Decision Matrix</h4>
-                        <p>PM Phil emphasizes: "There's really no middle ground in the short game." Decide your shot type first, then execute.</p>
-                        <ul>
-                            <li><strong>High Pitch (60° wedge):</strong> Open face, ball forward, more wrist hinge. Produces height and backspin for longer distances</li>
-                            <li><strong>Low Pitch (Sand wedge):</strong> Short crisp backswing, hands ahead through impact. Lands short and runs to hole</li>
-                            <li><strong>Weight Forward:</strong> PM emphasizes 55/45 to 60/40 weight distribution on soft ground, 100% forward on firm ground</li>
-                            <li><strong>Hands Ahead:</strong> Maintain lead arm-shaft line at address and through impact. Prevents club flipping and rising leading edge</li>
-                        </ul>
-                        <h4>Setup for Consistency</h4>
-                        <ul>
+                        <h3>🐯 Standard Pitch (30-60 Yards)</h3>
+                        <p><strong>Clubs:</strong> PW, 56° Sand Wedge, 52° Gap Wedge</p>
+                        <p><strong>Use:</strong> 30-60 yards from green with open landing area</p>
+
+                        <h4>The Core Technique</h4>
+                        <p>🐯 <strong>Tiger's System:</strong> Upper body rotation engines the swing with arms tight to body. Keep clubhead low through hitting zone (think "slide, not smash"). Varied hinge/release creates distance control without major swing changes.</p>
+                        <p>PM <strong>Phil's Philosophy:</strong> Commit to high or low shot FIRST, then position ball. Forward weight (55-60%) + hands ahead of clubhead = consistency.</p>
+
+                        <h4>Setup</h4>
+                        <ul style="margin-top: 8px;">
                             <li><strong>Stance:</strong> Square to slightly open</li>
-                            <li><strong>Ball position:</strong> PM: Never middle! Decide high (forward) or low (back) - commit to your shot type</li>
-                            <li><strong>Weight:</strong> 🐯 Balanced/flexible for Tiger's system. PM: Forward-biased (55-60%) for consistent contact</li>
-                            <li><strong>Hands:</strong> PM: Ahead of clubhead at address (prevents flipping)</li>
-                            <li><strong>Posture:</strong> Hip bend creates natural arm hang</li>
+                            <li><strong>Ball Position:</strong> Forward (high shot) or back (low shot) — never middle</li>
+                            <li><strong>Weight:</strong> Balanced to forward-biased (55-60%)</li>
+                            <li><strong>Hands:</strong> Ahead of clubhead</li>
                         </ul>
-                        <h4>Core Principle</h4>
-                        <p>🐯 Tiger: Repeatable setup produces consistent contact. PM: Commit to your shot shape first, then position accordingly. Together: reliable mechanics + intentional decision-making = better pitching.</p>
-                        <h4>Common Mistakes</h4>
-                        <ul>
-                            <li>Arms swinging independently (loses body connection)</li>
-                            <li>Ball in middle of stance (PM: no commitment to shot type)</li>
-                            <li>Shaft too far ahead at address (delofts, firm contact)</li>
-                            <li>Poor spacing (arms don't hang naturally, tension creeps in)</li>
-                            <li>Hands behind ball (PM: invites club flip and inconsistency)</li>
+
+                        <h4>Swing Mechanics</h4>
+                        <ul style="margin-top: 8px;">
+                            <li><strong>Backswing:</strong> Upper body only, arms stay tight</li>
+                            <li><strong>Downswing:</strong> Rotate through, keep club low</li>
+                            <li><strong>Impact:</strong> Hands ahead, accelerate smoothly</li>
+                            <li><strong>Finish:</strong> Complete motion, smooth tempo</li>
                         </ul>
+
+                        <button class="tips-toggle" onclick="toggleTips(this)">💡 Show Tips</button>
+                        <div class="tips-content">
+                            <h4>🐯 Tiger's 5-Step System (Details)</h4>
+                            <ul style="font-size: 13px;">
+                                <li><strong>Step 1:</strong> Arms tight, upper body motors swing</li>
+                                <li><strong>Step 2:</strong> Varied hinge/release for distance (same swing shape)</li>
+                                <li><strong>Step 3:</strong> Club centered at address, shaft straight</li>
+                                <li><strong>Step 4:</strong> Club low, ball high — slide through impact</li>
+                                <li><strong>Step 5:</strong> Natural arm hang from proper hip bend</li>
+                            </ul>
+                            <h4>PM Phil's Shot Types</h4>
+                            <ul style="font-size: 13px;">
+                                <li><strong>High Pitch:</strong> 60° wedge, open face, ball forward, more wrist hinge</li>
+                                <li><strong>Low Pitch:</strong> Sand wedge, short crisp swing, hands ahead, lands short</li>
+                                <li><strong>Weight Forward:</strong> 55/45 soft ground, 100% firm ground = clean contact</li>
+                            </ul>
+                            <h4>Common Mistakes</h4>
+                            <ul style="font-size: 13px;">
+                                <li>Arms swinging independently (disconnect from body)</li>
+                                <li>Ball in middle of stance (no commitment to shot)</li>
+                                <li>Hands behind ball (club flips, inconsistent)</li>
+                                <li>Hitting hard instead of sliding (poor contact)</li>
+                            </ul>
+                        </div>
                     </div>
                 `
             },
@@ -2369,6 +2414,40 @@
                 `
             },
             {
+                title: 'PM Phil Mickelson Core Principles',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>PM Phil Mickelson's Short Game Mastery</h3>
+                        <p>Phil's signature principles for pitching, chipping, and bunker play:</p>
+                        <h4>1. The Big 3 Chipping Fundamentals</h4>
+                        <p><strong>Weight on Front Foot:</strong> 55/45 to 60/40 on soft ground, 100% forward on firm ground. This one principle prevents most chipping mistakes.</p>
+                        <p><strong>Hands Ahead of Clubhead:</strong> Straight line from lead arm through shaft. Prevents the club from flipping and leading edge from rising.</p>
+                        <p><strong>Commit to Ball Position:</strong> Never play middle! Decide high or low shot first, then position ball accordingly. Commitment creates consistency.</p>
+                        <h4>2. Forward Weight is Everything</h4>
+                        <p>Whether chipping, pitching, or from bunkers—forward weight is the foundation. It prevents fat shots, controls trajectory, and creates repeatable contact. PM says repeatedly: "Your weight has to stay forward."</p>
+                        <h4>3. There's No Middle Ground</h4>
+                        <p>"In the short game, there's really no middle ground." Every shot has a purpose. Decide before you swing: high or low, aggressive or conservative, spinner or runner. Commit completely.</p>
+                        <h4>4. Bunker Mastery: Forward Weight + Drive Down</h4>
+                        <p>From greenside bunkers, forward weight is critical. Especially in firm sand, weight must anchor forward and the club must drive DOWN into sand (not relying on bounce). This creates repeatable contact in any sand condition.</p>
+                        <h4>5. The Low Runner Genius</h4>
+                        <p>Use a 9-iron with minimal arm swing. Simply move your hands toward the target. This producing low shots that run like putts. Perfect for uphill lies with green to work with. Shows Phil's creativity and simplicity.</p>
+                        <h4>6. Master the Four Pitch Types</h4>
+                        <p><strong>Low Pitch:</strong> Sand wedge, crisp backswing, lands short, runs. <strong>High Pitch:</strong> 60° wedge, open face, more wrist hinge, longer distance. <strong>Low Runner:</strong> 9-iron, hands forward motion, rolls like putt. <strong>Biting Chip:</strong> 60° wedge back in stance, steep swing, small divot, checks quickly.</p>
+                        <h4>7. Hands Forward Creates Control</h4>
+                        <p>Across all short game shots, hands ahead at address and through impact is universal. This single position creates the foundation for chipping, pitching, and bunker play consistency.</p>
+                        <h4>8. Touch Over Power</h4>
+                        <p>Phil's philosophy emphasizes feel and control over distance and power. The short game is about precision, not force. Soft tempo with forward weight creates better contact than hard swings.</p>
+                        <h4>9. Creativity Within Structure</h4>
+                        <p>While fundamentals (weight, hands, commitment) are non-negotiable, Phil uses those fundamentals to create shot variety. The Low Runner, Biting Chip, and Flop Shot all emerge from the same foundation.</p>
+                        <h4>10. Know Your Wedges</h4>
+                        <p>Master your 56° sand wedge across ALL conditions (fluffy sand, firm sand, tight lies, pitching). Phil emphasizes mastering ONE club from various positions rather than collecting wedges. Depth, bounce, and grind matter.</p>
+                        <h4>PM Applied Across Your Game</h4>
+                        <p>From pitching 30 yards to escaping firm bunkers, Phil's fundamentals—forward weight, hands ahead, commitment to shot shape—create a versatile, confident short game. Combined with Tiger's mechanics, you have world-class instruction.</p>
+                    </div>
+                `
+            },
+            {
                 title: 'Club Setup',
                 type: 'appendix',
                 content: `
@@ -2565,6 +2644,14 @@
 
         function saveYardages() {
             closeModal('yardageModal');
+        }
+
+        function toggleTips(button) {
+            const tipsContent = button.nextElementSibling;
+            if (tipsContent && tipsContent.classList.contains('tips-content')) {
+                tipsContent.classList.toggle('expanded');
+                button.textContent = tipsContent.classList.contains('expanded') ? '💡 Hide Tips' : '💡 Show Tips';
+            }
         }
 
         document.getElementById('clubSetupBtn').addEventListener('click', function() {
