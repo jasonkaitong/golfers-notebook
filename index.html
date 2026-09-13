@@ -3104,9 +3104,9 @@ function updatePages() {
 
             // Swing options removed per user request
 
-            document.getElementById('sa-swings').textContent = '';
-            document.getElementById('sa-carry-val').textContent = '';
-            document.getElementById('sa-total-val').textContent = '';
+            document.getElementById('sa-swings').style.display = 'none';
+            document.getElementById('sa-carry').style.display = 'none';
+            document.getElementById('sa-total').style.display = 'none';
 
             let strategy = 'Execute with commitment.';
             if (location === 'tee' && distance > 150) strategy = 'Maximize distance. Smooth tempo.';
