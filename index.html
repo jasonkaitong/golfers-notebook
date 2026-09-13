@@ -3061,8 +3061,8 @@ function updatePages() {
             // Calculate adjusted distance for conditions
             let adjustedDistance = distance;
 
-            if (elev > 0) adjustedDistance += Math.abs(elev) * 2;
-            else if (elev < 0) adjustedDistance -= Math.abs(elev) * 1.5;
+            if (elev > 0) adjustedDistance += Math.abs(elev);
+            else if (elev < 0) adjustedDistance -= Math.abs(elev);
 
             if (wind === 'strong') {
                 if (winddir === 'headwind') adjustedDistance += 20;
@@ -3100,12 +3100,11 @@ function updatePages() {
             const softCarry = Math.round(baseCarry * lieFactor * 0.85); // Soft swing ~85% of normal
             const fullCarry = Math.round(baseCarry * lieFactor); // Full swing
 
-            document.getElementById('sa-club').textContent = club + ' (normal distance is ' + baseCarry + 'y but from ' + lie + ' lie estimate: ' + softCarry + 'y (soft) and ' + fullCarry + 'y (full))';
+            document.getElementById('sa-club').textContent = 'Recommend: ' + club + ' - Normal ' + baseCarry + 'y, from ' + lie + ' ~' + fullCarry + 'y';
 
-            // Add swing options
-            const swings = getSASwingOptions(club, adjustedDistance);
-            document.getElementById('sa-swings').textContent = 'Swings: ' + swings.join(' / ');
+            // Swing options removed per user request
 
+            document.getElementById('sa-swings').textContent = '';
             document.getElementById('sa-carry-val').textContent = fullCarry + 'y';
             document.getElementById('sa-total-val').textContent = Math.round(fullCarry * 1.05) + 'y';
 
