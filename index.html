@@ -688,7 +688,8 @@
             <button class="category-btn" data-section="1">Off Tee</button>
             <button class="category-btn" data-section="9">Fairway</button>
             <button class="category-btn" data-section="23">Around Green</button>
-            <button class="category-btn" data-section="46">Appendix</button>
+            <button class="category-btn" data-section="47">Putting</button>
+            <button class="category-btn" data-section="52">Appendix</button>
         </div>
 
         <div class="content-area" id="contentArea">
@@ -752,6 +753,7 @@
             { name: 'PW', carry: 116, total: 120 },
             { name: 'GW (52°)', carry: 110, total: 115 },
             { name: 'SW (56°)', carry: 100, total: 105 },
+            { name: 'LW (60°)', carry: 90, total: 95 },
             { name: 'Putter', carry: 0, total: 0 }
         ];
 
@@ -1759,7 +1761,7 @@
                 content: `
                     <div class="page-content">
                         <h3>Standard Pitch (30-60 Yards)</h3>
-                        <p><strong>Clubs:</strong> PW, 56° Sand Wedge, 52° Gap Wedge</p>
+                        <p><strong>Clubs:</strong> PW, 56° Sand Wedge, 52° Gap Wedge, 60° Lob Wedge (for soft landings)</p>
                         <p><strong>Use:</strong> 30-60 yards from green with open landing area</p>
 
                         <h4>The Core Technique</h4>
@@ -1879,7 +1881,7 @@
                     <div class="page-content">
                         <h3>Flop Shot</h3>
                         <h4>Recommended Clubs</h4>
-                        <p>Sand Wedge (56°) or Gap Wedge (52°) opened maximally</p>
+                        <p>Lob Wedge (60°) — ideal. Sand Wedge (56°) or Gap Wedge (52°) as alternatives</p>
                         <h4>Strategy</h4>
                         <p>Maximum loft, soft landing. Requires decent lie and green space behind pin.</p>
                         <h4>When to Play</h4>
@@ -1923,7 +1925,7 @@
                     <div class="page-content">
                         <h3>Flop Shot from Fluffy Lie</h3>
                         <h4>Recommended Clubs</h4>
-                        <p>Sand Wedge (56°) or Gap Wedge (52°)</p>
+                        <p>Lob Wedge (60°) — ideal. Sand Wedge (56°) or Gap Wedge (52°) as alternatives</p>
                         <h4>Strategy</h4>
                         <p>Similar to flop shot but from deeper grass. Ball sits higher, easier contact expected.</p>
                         <h4>When to Play</h4>
@@ -2073,6 +2075,50 @@
                             <li>Club face closed (ball rockets, no loft)</li>
                             <li>Stance not open enough (pulls left, poor trajectory)</li>
                         </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Wedge Distance Reference',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Wedge Distance Reference</h3>
+                        <p><strong>Use this chart to reference expected distances by swing length.</strong></p>
+
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr style="background: #f0f0f0;">
+                                <th style="border: 1px solid #ddd; padding: 10px; text-align: left;"><strong>Swing Length</strong></th>
+                                <th style="border: 1px solid #ddd; padding: 10px; text-align: center;"><strong>PW (46-48°)</strong></th>
+                                <th style="border: 1px solid #ddd; padding: 10px; text-align: center;"><strong>GW (50-52°)</strong></th>
+                                <th style="border: 1px solid #ddd; padding: 10px; text-align: center;"><strong>SW (56°)</strong></th>
+                                <th style="border: 1px solid #ddd; padding: 10px; text-align: center;"><strong>LW (60°)</strong></th>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 10px;"><strong>Full Swing (100%)</strong><br><span style="font-size: 11px; color: #666;">Hands past shoulders</span></td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">120y</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">110y</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">100y</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">90y</td>
+                            </tr>
+                            <tr style="background: #f9f9f9;">
+                                <td style="border: 1px solid #ddd; padding: 10px;"><strong>Three-Quarter (75%)</strong><br><span style="font-size: 11px; color: #666;">Hands at shoulders</span></td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">100y</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">90y</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">80y</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">70y</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 10px;"><strong>Half Swing (50%)</strong><br><span style="font-size: 11px; color: #666;">Hands at hips</span></td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">80y</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">70y</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">60y</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">50y</td>
+                            </tr>
+                        </table>
+
+                        <h4 style="margin-top: 20px;">Note</h4>
+                        <p style="font-size: 13px; color: #555;">These distances are reference points based on your swing data. Partial swing distances can vary due to swing tempo, technique, and lie conditions. Use these as guides, not absolutes.</p>
                     </div>
                 `
             },
@@ -2558,6 +2604,117 @@
                 `
             },
             {
+                title: 'Putting',
+                type: 'section',
+                content: `
+                    <div class="section-title">
+                        <h2>Putting</h2>
+                        <p>Reading Greens & Speed</p>
+                        <div class="section-links">
+                            <div class="section-link" onclick="goToPage(48)">Reading the Break</div>
+                            <div class="section-link" onclick="goToPage(49)">Uphill, Downhill & Speed</div>
+                            <div class="section-link" onclick="goToPage(50)">Short & Long Putts</div>
+                            <div class="section-link" onclick="goToPage(51)">Calibrate Your Misses</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: 'Reading the Break',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Reading the Break (AimPoint Express)</h3>
+                        <p><strong>Clubs:</strong> Putter</p>
+                        <p><strong>Use:</strong> Putts of roughly 10-20 feet on medium-speed greens.</p>
+
+                        <h4>Step 1: Rate the Slope</h4>
+                        <p>Straddle the line about halfway to the hole, or a bit closer, and feel your weight.</p>
+                        <table class="yardage-table">
+                            <thead>
+                                <tr>
+                                    <th>Slope</th>
+                                    <th>What You Feel</th>
+                                    <th>Fingers</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1 (Gentle)</td><td>Barely feel it</td><td>1</td></tr>
+                                <tr><td>2 (Moderate)</td><td>Clearly feel it</td><td>2</td></tr>
+                                <tr><td>3 (Steep)</td><td>Feels like you might lean over</td><td>3</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Step 2: Convert to Fingers</h4>
+                        <ul style="margin-top: 8px;">
+                            <li>Stand behind the ball and hold your arm straight out.</li>
+                            <li>Close one eye.</li>
+                            <li>Put the edge of your first finger on the center of the hole, on the side the ball breaks from.</li>
+                            <li>Hold up as many fingers as your slope number.</li>
+                            <li><strong>The outside edge of the last finger is your aim point.</strong></li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Uphill, Downhill & Speed',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Uphill, Downhill & Speed</h3>
+                        <p>Adjust your finger read for the situation.</p>
+
+                        <h4>Uphill</h4>
+                        <p>Take away about half a finger to one finger. The ball breaks less.</p>
+
+                        <h4>Downhill</h4>
+                        <p>Add about one finger.</p>
+
+                        <h4>Green Speed</h4>
+                        <ul style="margin-top: 8px;">
+                            <li><strong>Fast greens:</strong> Add a little.</li>
+                            <li><strong>Slow greens:</strong> Take a little away.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: 'Short & Long Putts',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Short & Long Putts</h3>
+                        <p>Break changes with distance, so the read changes too.</p>
+
+                        <h4>Short Putts (Under 6 Feet)</h4>
+                        <p>Firm speed usually means aiming at the edge of the cup or just inside it.</p>
+
+                        <h4>Long Putts</h4>
+                        <p>Break grows quickly with distance. Expect noticeably more than your short-putt read.</p>
+                    </div>
+                `
+            },
+            {
+                title: 'Calibrate Your Misses',
+                type: 'shot',
+                content: `
+                    <div class="page-content">
+                        <h3>Calibrate Your Misses</h3>
+                        <p>Most amateurs read less break than the green actually gives, and they tend to steer putts toward the hole. That is why so many finish below the cup.</p>
+
+                        <h4>Trust the Bigger Read</h4>
+                        <p>If you are between two reads, pick the bigger one.</p>
+
+                        <h4>Track Where Putts Finish</h4>
+                        <ul style="margin-top: 8px;">
+                            <li><strong>Finish below the hole (amateur side):</strong> You are under-reading. Add a finger.</li>
+                            <li><strong>Finish above the hole:</strong> You are over-reading or hitting it too soft. Take a finger away.</li>
+                        </ul>
+                        <p style="margin-top: 8px;">After a few rounds you will know whether to add or take away a finger on your own greens.</p>
+                    </div>
+                `
+            },
+            {
                 title: 'Appendix',
                 type: 'section',
                 content: `
@@ -2565,9 +2722,9 @@
                         <h2>Appendix</h2>
                         <p>Principles & Tools</p>
                         <div class="section-links">
-                            <div class="section-link" onclick="goToPage(47)">Tiger's Principles</div>
-                            <div class="section-link" onclick="goToPage(48)">🪄Phil's Principles</div>
-                            <div class="section-link" onclick="goToPage(49)">👨‍🍳 Scottie's Principles</div>
+                            <div class="section-link" onclick="goToPage(53)">Tiger's Principles</div>
+                            <div class="section-link" onclick="goToPage(54)">🪄Phil's Principles</div>
+                            <div class="section-link" onclick="goToPage(55)">👨‍🍳 Scottie's Principles</div>
                             <div class="section-link" onclick="openModal('clubSetupModal')">⚙️ Club Setup</div>
                             <div class="section-link" onclick="openModal('yardageModal')">📏 Yardage Chart</div>
                         </div>
@@ -2882,14 +3039,18 @@ function updatePages() {
         }
 
         function updateCategoryBar() {
+            // Active category = the last category whose start page is at or before the current page
             const categoryBtns = document.querySelectorAll('.category-btn');
+            let activeBtn = null;
             categoryBtns.forEach(btn => {
-                const section = parseInt(btn.dataset.section);
                 btn.classList.remove('active');
-                if (section <= currentPage && currentPage < (section + 10)) {
-                    btn.classList.add('active');
+                if (parseInt(btn.dataset.section) <= currentPage) {
+                    activeBtn = btn;
                 }
             });
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
         }
 
         function addSwipeListener() {
@@ -3104,9 +3265,9 @@ function updatePages() {
 
             // Swing options removed per user request
 
-            document.getElementById('sa-swings').style.display = 'none';
-            document.getElementById('sa-carry').style.display = 'none';
-            document.getElementById('sa-total').style.display = 'none';
+            document.getElementById('sa-swings').innerHTML = '';
+            document.getElementById('sa-carry').innerHTML = '';
+            document.getElementById('sa-total').innerHTML = '';
 
             let strategy = 'Execute with commitment.';
             if (location === 'tee' && distance > 150) strategy = 'Maximize distance. Smooth tempo.';
